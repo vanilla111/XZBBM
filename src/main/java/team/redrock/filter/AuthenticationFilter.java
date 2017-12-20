@@ -30,13 +30,13 @@ public class AuthenticationFilter implements Filter {
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) resp;
-//        //测试代码
-//        Student student = new Student();
-//        student.setStu_id("2015211516");
-//        student.setNick_name("admin");
-//        student.setHead_url("www.baidu.com");
-//        student.setIdentity(Jurisdiction.SUPERSCHOLAR.getType());
-//        request.getSession().setAttribute("user", student);
+        //测试代码
+        Student student = new Student();
+        student.setStu_id("2015211516");
+        student.setNick_name("admin");
+        student.setHead_url("www.baidu.com");
+        student.setIdentity(Jurisdiction.SUPERSCHOLAR.getType());
+        request.getSession().setAttribute("user", student);
 
         // 判断session中是否有该用户
         Student stu = (Student) request.getSession().getAttribute("user");
