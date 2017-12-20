@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="team.redrock.dao.DiscussMapper">
+
+    <resultMap type="team.redrock.bean.Discuss" id="DiscussResult">
+        <id column="id" jdbcType="INTEGER" javaType="java.lang.Integer" property="id"/>
+        <result column="pid" jdbcType="INTEGER" javaType="java.lang.Integer" property="pid"/>
+        <result column="author_id" jdbcType="VARCHAR" javaType="java.lang.String" property="author_id"/>
+        <result column="nick_name" jdbcType="VARCHAR" javaType="java.lang.String" property="nick_name"/>
+        <result column="head_url" jdbcType="VARCHAR" javaType="java.lang.String" property="head_url"/>
+        <result column="title" jdbcType="VARCHAR" javaType="java.lang.String" property="title"/>
+        <result column="content" jdbcType="VARCHAR" javaType="java.lang.String" property="content"/>
+        <result column="pic_name" jdbcType="VARCHAR" javaType="java.lang.String" property="pic_name"/>
+        <result column="pic_thumb" jdbcType="VARCHAR" javaType="java.lang.String" property="pic_thumb"/>
+        <result column="tag" jdbcType="VARCHAR" javaType="java.lang.String" property="tag"/>
+        <result column="is_scholar" jdbcType="BOOLEAN" javaType="java.lang.Boolean" property="scholar"/>
+        <result column="is_accepted" jdbcType="BOOLEAN" javaType="java.lang.Boolean" property="accepted"/>
+        <result column="reply_count" jdbcType="INTEGER" javaType="java.lang.Integer" property="reply_count"/>
+        <result column="like_count" jdbcType="INTEGER" javaType="java.lang.Integer" property="like_count"/>
+        <result column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" property="create_time"/>
+        <result column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" property="update_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, pid, author_id, nick_name, head_url, title, content, pic_name, pic_thumb, tag, is_scholar, is_accepted, reply_count, like_count, create_time, update_time
+    </sql>
+
+    <select id="selectDiscusses" resultMap="DiscussResult">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM discuss
+        WHERE pid = 0 AND status = 1
+        ORDER BY id DESC
+    </select>
+
+    <select id="selectDiscussesOrderByReplyCount" resultMap="DiscussResult">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM discuss
+        WHERE pid = 0 AND status = 1
+        ORDER BY reply_count DESC
+    </select>
+
+    <select id="selectDiscussByPrimaryKey" parameterType="java.lang.Integer" resultMap="DiscussResult">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM discuss
+        WHERE id = #{discussId, jdbcType=INTEGER} AND status = 1
+    </select>
+
+    <select id="selectQuestionByReplyId" parameterType="java.lang.Integer" resultMap="DiscussResult">
+        SELECT <include refid="Base_Column_List"/>
+        FROM discuss WHERE id = (
+              SELECT pid FROM discuss WHERE id = #{replyId, jdbcType=INTEGER}
+        ) AND status = 1
+    </select>
+
+    <select id="selectRepliesByPid" parameterType="java.lang.Integer" resultMap="DiscussResult">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM discuss
+        WHERE pid = #{pid, jdbcType=INTEGER} AND status = 1
+        ORDER BY id DESC
+    </select>
+    
+    <select id="selectDiscussesByAuthorId" parameterType="java.lang.String" resultMap="DiscussResult">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM discuss
+        WHERE author_id = #{authorId, jdbcType=VARCHAR} AND status = 1
+        ORDER BY id DESC
+    </select>
+
+    <select id="selectMyQuestionsByAuthorId" parameterType="java.lang.String" resultMap="DiscussResult">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM discuss
+        WHERE author_id = #{authorId, jdbcType=VARCHAR} AND pid = 0 AND status = 1
+        ORDER BY id DESC
+    </select>
+
+    <select id="selectMyRepliesByAuthorId" parameterType="java.lang.String" resultMap="DiscussResult">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM discuss
+        WHERE author_id = #{authorId, jdbcType=VARCHAR} AND pid != 0 AND status = 1
+        ORDER BY id DESC
+    </select>
+
+    <select id="selectDiscussesByDate" parameterType="java.lang.String" resultMap="DiscussResult">
+        SELECT 
+        <include refid="Base_Column_List"/>
+        FROM discuss
+        WHERE create_time >= #{startDate, jdbcType=TIMESTAMP} AND pid = 0 AND status = 1
+        ORDER BY id DESC
+    </select>
+
+    <select id="selectDiscussesByAnswerStuId" parameterType="java.lang.String" resultMap="DiscussResult">
+        SELECT <include refid="Base_Column_List"/> FROM discuss WHERE id IN
+        (SELECT DISTINCT pid FROM discuss WHERE author_id = #{authorId, jdbcType=VARCHAR} AND pid != 0 AND status = 1)
+        AND status = 1 AND pid = 0 ORDER BY id DESC
+    </select>
+
+    <select id="searchDiscusses" resultMap="DiscussResult">
+        SELECT <include refid="Base_Column_List"/> FROM discuss WHERE 1=1
+        <if test="keyWord != null">
+            AND title LIKE '%' #{keyWord, jdbcType=VARCHAR} '%'
+        </if>
+        <if test="tag != null">
+            AND tag = #{tag, jdbcType=VARCHAR}
+        </if>
+        AND status = 1 AND pid = 0
+        ORDER BY id DESC
+    </select>
+    
+    <insert id="insertSelective" parameterType="team.redrock.bean.Discuss">
+        INSERT INTO discuss
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pid != null">
+                pid,
+            </if>
+            <if test="author_id != null">
+                author_id,
+            </if>
+            <if test="nick_name != null">
+                nick_name,
+            </if>
+            <if test="head_url != null">
+                head_url,
+            </if>
+            <if test="title != null">
+                title,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+            <if test="scholar != null">
+                is_scholar,
+            </if>
+            <if test="pic_name != null">
+                pic_name,
+            </if>
+            <if test="pic_thumb != null">
+                pic_thumb,
+            </if>
+            <if test="tag != null">
+                tag,
+            </if>
+            create_time, update_time
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+            <if test="pid != null" >
+                #{pid, jdbcType=INTEGER},
+            </if>
+            <if test="author_id != null">
+                #{author_id, jdbcType=VARCHAR},
+            </if>
+            <if test="nick_name != null">
+                #{nick_name, jdbcType=VARCHAR},
+            </if>
+            <if test="head_url != null">
+                #{head_url, jdbcType=VARCHAR},
+            </if>
+            <if test="title != null">
+                #{title, jdbcType=VARCHAR},
+            </if>
+            <if test="content != null">
+                #{content, jdbcType=VARCHAR},
+            </if>
+            <if test="scholar != null">
+                #{scholar, jdbcType=BOOLEAN},
+            </if>
+            <if test="pic_name != null">
+                #{pic_name, jdbcType=VARCHAR},
+            </if>
+            <if test="pic_thumb != null">
+                #{pic_thumb, jdbcType=VARCHAR},
+            </if>
+            <if test="tag != null">
+                #{tag, jdbcType=VARCHAR},
+            </if>
+            now(), now()
+        </trim>
+    </insert>
+
+    <update id="incrementReplyCount" parameterType="java.lang.Integer">
+        UPDATE discuss SET reply_count = reply_count+1 WHERE id = #{id, jdbcType=INTEGER} AND pid = 0 AND status = 1
+    </update>
+
+    <update id="incrementLikeCount" parameterType="java.lang.Integer">
+        UPDATE discuss SET like_count = like_count+1 WHERE id = #{id, jdbcType=INTEGER} AND pid != 0 AND status = 1
+    </update>
+
+    <update id="decrementLikeCount" parameterType="java.lang.Integer">
+        UPDATE discuss SET like_count = like_count-1 WHERE id = #{id, jdbcType=INTEGER} AND pid != 0 AND status = 1 AND like_count > 0
+    </update>
+
+    <update id="acceptReply">
+        UPDATE discuss SET is_accepted = 1
+        WHERE id = #{replyId, jdbcType=INTEGER} AND status = 1 AND pid != 0
+    </update>
+
+    <update id="cancelAcceptReply">
+        UPDATE discuss SET is_accepted = 0
+        WHERE id = #{replyId, jdbcType=INTEGER} AND status = 1 AND pid != 0
+    </update>
+
+</mapper>

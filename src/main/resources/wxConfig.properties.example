@@ -1,0 +1,13 @@
+appID=
+appsecret=
+token=
+
+bbmIndex=
+bbmNotFound=
+bbmTerm=201712
+bbmStartTime=2017-12-25
+
+UPLOAD_PATH=../webapps/PHOTO_UPLOAD/
+MEMORY_THRESHOLD=65536
+MAX_FILE_SIZE=4194304
+MAX_REQUEST_SIZE=5242880

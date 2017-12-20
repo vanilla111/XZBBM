@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="team.redrock.dao.JuniorMapper">
+
+    <resultMap type="team.redrock.bean.Student" id="juniorResult">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="stu_id" jdbcType="VARCHAR" property="stu_id"/>
+        <result column="gender" jdbcType="VARCHAR" property="gender"/>
+        <result column="class_num" jdbcType="VARCHAR" property="class_num"/>
+        <result column="major" jdbcType="VARCHAR" property="major"/>
+        <result column="grade" jdbcType="INTEGER" property="grade"/>
+        <result column="openId" jdbcType="VARCHAR" property="openId"/>
+        <result column="head_url" jdbcType="VARCHAR" property="head_url"/>
+        <result column="nick_name" jdbcType="VARCHAR" property="nick_name"/>
+        <result column="identity" jdbcType="INTEGER" property="identity"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, name, stu_id, gender, class_num, major, grade, openId, head_url, nick_name, identity
+    </sql>
+    
+    <select id="queryJuniorByOpenid" resultMap="juniorResult" parameterType="String">
+        SELECT * FROM junior WHERE openId = #{openId}
+    </select>
+
+    <select id="selectByStuId" resultMap="juniorResult" parameterType="String">
+        SELECT * FROM junior WHERE stu_id = #{stuId}
+    </select>
+
+    <insert id="insertSelective" parameterType="team.redrock.bean.Student">
+        INSERT INTO junior
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">
+                name,
+            </if>
+            <if test="gender != null">
+                gender,
+            </if>
+            <if test="class_num != null">
+                class_num,
+            </if>
+            <if test="major != null">
+                major,
+            </if>
+            <if test="grade != null">
+                grade,
+            </if>
+            <if test="openId != null">
+                openId,
+            </if>
+            <if test="head_url != null">
+                head_url,
+            </if>
+            <if test="nick_name != null">
+                nick_name,
+            </if>
+            <if test="identity != null">
+                identity,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">
+                #{name, jdbcType=VARCHAR},
+            </if>
+            <if test="gender != null">
+                #{gender, jdbcType=INTEGER},
+            </if>
+            <if test="class_num != null">
+                #{class_num, jdbcType=VARCHAR},
+            </if>
+            <if test="major != null">
+                #{major, jdbcType=VARCHAR},
+            </if>
+            <if test="grade != null">
+                #{grade, jdbcType=INTEGER},
+            </if>
+            <if test="openId != null">
+                #{openId, jdbcType=VARCHAR},
+            </if>
+            <if test="head_url != null">
+                #{head_url, jdbcType=VARCHAR},
+            </if>
+            <if test="nick_name != null">
+                #{nick_name, jdbcType=VARCHAR},
+            </if>
+            <if test="identity != null">
+                #{identity, jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateWXInfoByPrimaryKey" parameterType="team.redrock.bean.Student">
+        UPDATE junior SET
+        nick_name=#{nick_name, jdbcType=VARCHAR},
+        head_url=#{head_url, jdbcType=VARCHAR}
+        WHERE id=#{id, jdbcType=INTEGER}
+    </update>
+
+
+</mapper>

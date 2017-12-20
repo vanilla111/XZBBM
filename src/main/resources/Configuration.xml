@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+    PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+  <properties resource="DBConfig.properties">
+    <property name="driver" value="com.mysql.jdbc.Driver"/>
+  </properties>
+  
+  <plugins>
+    <plugin interceptor="com.github.pagehelper.PageInterceptor">
+      <!-- 该参数默认为false -->
+      <!-- 设置为true时，会将RowBounds第一个参数offset当成pageNum页码使用 -->
+      <!-- 和startPage中的pageNum效果一样-->
+      <property name="offsetAsPageNum" value="true"/>
+      <!-- 该参数默认为false -->
+      <!-- 设置为true时，使用RowBounds分页会进行count查询 -->
+      <property name="rowBoundsWithCount" value="true"/>
+      <!-- 设置为true时，如果pageSize=0或者RowBounds.limit = 0就会查询出全部的结果 -->
+      <!-- （相当于没有执行分页查询，但是返回结果仍然是Page类型）-->
+      <property name="pageSizeZero" value="true"/>
+      <!-- 启用合理化时，如果pageNum<1会查询第一页，如果pageNum>pages会查询最后一页 -->
+      <!-- 禁用合理化时，如果pageNum<1或pageNum>pages会返回空数据 -->
+      <property name="reasonable" value="true"/>
+    </plugin>
+  </plugins>
+  
+
+  <environments default="development">
+    <environment id="development">
+      <transactionManager type="JDBC">
+        <property name="" value=""/>
+      </transactionManager>
+      <dataSource type="POOLED">
+        <property name="driver" value="${driver}"/>
+        <property name="url" value="${connection_url}"/>
+        <property name="username" value="${username}"/>
+        <property name="password" value="${password}"/>
+
+        <!--在任意时间可以存在的活动（也就是正在使用）连接数量，默认值：10-->
+        <property name="poolMaximumActiveConnections" value="15"/>
+        <!--在被强制返回之前，池中连接被检出（checked out）时间，默认值：20000 毫秒（即 20 秒)-->
+        <property name="poolMaximumCheckoutTime" value="20000"/>
+        <!--如果获取连接花费的相当长的时间，它会给连接池打印状态日志并重新尝试获取一个连接
+        （避免在误配置的情况下一直安静的失败），默认值：20000 毫秒（即 20 秒)-->
+        <property name="poolTimeToWait" value="30000"/>
+        <!--线程获取到的是一个坏的连接，那么这个数据源允许这 个线程尝试重新获取一个新的连接，但是这个重新尝试的次数不应该超过 默认值 3-->
+        <property name="poolMaximumLocalBadConnectionTolerance" value="3"/>
+
+      </dataSource>
+    </environment>
+  </environments>
+
+  <mappers>
+    <mapper resource="mappers/AccessToken.xml"/>
+    <mapper resource="mappers/Junior.xml"/>
+    <mapper resource="mappers/Senior.xml"/>
+    <mapper resource="mappers/Discuss.xml"/>
+    <mapper resource="mappers/Upvote.xml"/>
+  </mappers>
+
+
+</configuration>

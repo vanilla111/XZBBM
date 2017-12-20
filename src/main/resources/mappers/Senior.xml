@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="team.redrock.dao.SeniorMapper">
+
+    <resultMap type="team.redrock.bean.SeniorStudent" id="seniorResult">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="stu_id" jdbcType="VARCHAR" property="stu_id"/>
+        <result column="gender" jdbcType="VARCHAR" property="gender"/>
+        <result column="openId" jdbcType="VARCHAR" property="openId"/>
+        <result column="head_url" jdbcType="VARCHAR" property="head_url"/>
+        <result column="nick_name" jdbcType="VARCHAR" property="nick_name"/>
+        <result column="term" jdbcType="INTEGER" property="term"/>
+
+        <result column="nation" jdbcType="VARCHAR" property="nation"/>
+        <result column="speciality" jdbcType="VARCHAR" property="speciality"/>
+        <result column="job" jdbcType="VARCHAR" property="job"/>
+        <result column="talent" jdbcType="VARCHAR" property="talent"/>
+        <result column="teacher" jdbcType="VARCHAR" property="teacher"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="qq" jdbcType="VARCHAR" property="qq"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="biography" jdbcType="VARCHAR" property="biography"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        name, stu_id, gender, openId, head_url, nick_name, term, nation,
+        speciality, job, talent, teacher, phone, qq, email, biography
+    </sql>
+
+    <select id="querySeniorByPrimaryKey" resultMap="seniorResult" parameterType="java.lang.Integer">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM senior
+        WHERE id=#{id, jdbcType=INTEGER}
+    </select>
+
+    <select id="querySeniorByOpenid" resultMap="seniorResult" parameterType="String">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM senior WHERE openId=#{openId, jdbcType=VARCHAR}
+    </select>
+
+    <select id="querySeniorByAuthorId" resultMap="seniorResult" parameterType="String">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM senior WHERE author_id=#{authorId, jdbcType=VARCHAR}
+    </select>
+
+    <update id="updateWXInfoByPrimaryKey" parameterType="team.redrock.bean.Student">
+        UPDATE junior SET
+        nick_name=#{nick_name, jdbcType=VARCHAR},
+        head_url=#{head_url, jdbcType=VARCHAR}
+        WHERE id=#{id, jdbcType=INTEGER}
+    </update>
+
+</mapper>

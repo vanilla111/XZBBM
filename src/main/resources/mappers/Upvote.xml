@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="team.redrock.dao.UpvoteMapper">
+
+    <resultMap type="team.redrock.bean.Upvote" id="UpvoteResult">
+        <id column="id" jdbcType="INTEGER" javaType="java.lang.Integer" property="id"/>
+        <result column="did" jdbcType="INTEGER" javaType="java.lang.Integer" property="did" />
+        <result column="aid" jdbcType="VARCHAR" javaType="java.lang.String" property="aid"/>
+        <result column="is_like" jdbcType="BOOLEAN" javaType="java.lang.Boolean" property="like"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, did, aid, is_like
+    </sql>
+
+    <select id="selectUpvoteByDidAiD" parameterType="team.redrock.bean.Upvote" resultMap="UpvoteResult">
+        SELECT <include refid="Base_Column_List"/>
+        FROM upvote WHERE did = #{did, jdbcType=INTEGER} AND aid = #{aid, jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectByDList" resultMap="UpvoteResult">
+        SELECT <include refid="Base_Column_List"/>
+        FROM upvote WHERE aid = #{authorId, jdbcType=VARCHAR}
+        AND is_like = 1
+        AND did IN (
+        <foreach collection="dList" item="item" index="index" separator=",">
+            #{item.id, jdbcType=INTEGER}
+        </foreach>)
+    </select>
+
+    <insert id="inertOneUpvote" parameterType="team.redrock.bean.Upvote">
+        INSERT INTO upvote (did, aid) VALUES (#{did, jdbcType=INTEGER}, #{aid, jdbcType=VARCHAR})
+    </insert>
+
+    <update id="upvoteDiscuss" parameterType="team.redrock.bean.Upvote">
+        UPDATE upvote SET is_like = 1 WHERE did = #{did, jdbcType=INTEGER} AND aid = #{aid, jdbcType=VARCHAR}
+    </update>
+
+    <update id="cancelUpvote" parameterType="team.redrock.bean.Upvote">
+        UPDATE upvote SET is_like = 0 WHERE did = #{did, jdbcType=INTEGER} AND aid = #{aid, jdbcType=VARCHAR}
+    </update>
+
+</mapper>
