@@ -3,6 +3,7 @@ package team.redrock.filter;
 import org.apache.ibatis.session.SqlSession;
 import org.json.JSONObject;
 import team.redrock.bean.Student;
+import team.redrock.common.Jurisdiction;
 import team.redrock.dao.JuniorMapper;
 import team.redrock.dao.SeniorMapper;
 import team.redrock.util.PropertiesUtil;
