@@ -31,6 +31,7 @@ public class AuthenticationFilter implements Filter {
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) resp;
+        response.setContentType("Access-Control-Allow-Origin:*");
         //测试代码
         Student student = new Student();
         student.setStu_id("2015211516");
@@ -70,7 +71,8 @@ public class AuthenticationFilter implements Filter {
                 if (stu == null) { // 查询小帮手绑定接口，获取用户信息
                     JSONObject stuInfo = WXUtil.doGetStr(openIdToStuInfoURL + openid);
                     if (stuInfo.getInt("status") == 200) {
-                        //用户信息存入数据库
+                        //再次查询 判断是否是学霸第一次登陆
+                        //如果学霸第一次登陆,应该更新senior中对应的openid
                         stu = new Student();
                         JSONObject stuData = stuInfo.getJSONObject("data");
                         stu.setCollege(stuData.getString("collage"));
@@ -82,7 +84,12 @@ public class AuthenticationFilter implements Filter {
                         stu.setOpenId(openid);
                         stu.setNick_name(userInfo.getString("nickname"));
                         stu.setHead_url(userInfo.getString("headimgurl"));
-                        juniorDB.insertSelective(stu);
+                        Student tempStu = seniorDB.querySeniorByAuthorId(stu.getStu_id());
+                        if (tempStu != null) {
+                            //第一次登陆 更新openid
+                            seniorDB.updateWXInfoByPrimaryKey(stu);
+                        } else
+                            juniorDB.insertSelective(stu);
                         sqlSession.commit();
                     } else {
                         // 获取失败跳转到绑定页面

@@ -40,10 +40,10 @@ public class DiscussServiceImpl implements IDiscussService {
             int res = discussMapper.insertSelective(discuss);
 
             if (res <= 0)
-                return ServerResponse.createBySuccessMessage("增加失败");
+                return ServerResponse.createByErrorMessage("增加失败");
 
             sqlSession.commit();
-            return ServerResponse.createByErrorMessage("增加成功");
+            return ServerResponse.createBySuccessMessage("增加成功");
         }
     }
 
