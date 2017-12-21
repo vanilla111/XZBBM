@@ -31,7 +31,8 @@ public class AuthenticationFilter implements Filter {
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) resp;
-        response.setContentType("Access-Control-Allow-Origin:*");
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Methods", "POST, GET, DELETE, PUT");
         //测试代码
         Student student = new Student();
         student.setStu_id("2015211516");
