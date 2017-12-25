@@ -24,7 +24,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        name, stu_id, gender, openId, head_url, nick_name, term, nation,
+        id, name, stu_id, gender, openId, head_url, nick_name, term, nation,
         speciality, job, talent, teacher, phone, qq, email, biography
     </sql>
 
@@ -44,11 +44,14 @@
     <select id="querySeniorByAuthorId" resultMap="seniorResult" parameterType="String">
         SELECT
         <include refid="Base_Column_List"/>
-        FROM senior WHERE author_id=#{authorId, jdbcType=VARCHAR}
+        FROM senior WHERE stu_id=#{authorId, jdbcType=VARCHAR}
     </select>
 
     <update id="updateWXInfoByPrimaryKey" parameterType="team.redrock.bean.Student">
-        UPDATE junior SET
+        UPDATE senior SET
+        <if test="openId != null">
+            openId=#{openId, jdbcType=VARCHAR},
+        </if>
         nick_name=#{nick_name, jdbcType=VARCHAR},
         head_url=#{head_url, jdbcType=VARCHAR}
         WHERE id=#{id, jdbcType=INTEGER}

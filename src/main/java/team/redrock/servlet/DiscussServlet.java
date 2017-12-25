@@ -72,8 +72,6 @@ public class DiscussServlet extends HttpServlet {
                 writer.print(new ObjectMapper().writeValueAsString(serverResponse));
             }
         }
-
-
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

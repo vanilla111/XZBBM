@@ -111,6 +111,10 @@ public class Student {
         return identity;
     }
 
+    public void setJurisdiction(Jurisdiction jurisdiction) {
+        this.jurisdiction = jurisdiction;
+    }
+
     public Jurisdiction getJurisdiction() {
         return jurisdiction;
     }
@@ -123,5 +127,14 @@ public class Student {
             case 2 : this.jurisdiction = Jurisdiction.SUPERSCHOLAR; break;
             default: this.jurisdiction = Jurisdiction.YOUKE;
         }
+    }
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder(this.stu_id + "\t" + this.name);
+        if (this.id > 0) sb.append("\t id:" + this.id);
+        if (this.nick_name != null) sb.append("\t" + this.nick_name);
+        if (this.jurisdiction != null) sb.append("\t" + this.jurisdiction.getIdentity());
+        if (this.head_url != null) sb.append("\t" + this.head_url);
+        return  sb.toString();
     }
 }

@@ -3,6 +3,7 @@ package team.redrock.servlet;
 import net.coobird.thumbnailator.Thumbnails;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadBase;
+import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -104,10 +105,11 @@ public class UploadServlet extends HttpServlet {
         } catch (FileTypeNotSupportException e) {
             ServerResponse res = ServerResponse.createByErrorMessage("文件类型仅支持 JPEG(JPG),PNG,GIF,BMP,TIFF");
             writer.print(new ObjectMapper().writeValueAsString(res));
-        } catch (Exception e) {
-            e.printStackTrace();
-            ServerResponse res = ServerResponse.createByErrorMessage("上传文件失败，网络问题或系统内部错误");
+        } catch (FileUploadException e) {
+            ServerResponse res = ServerResponse.createByErrorMessage("文件上传失败");
             writer.print(new ObjectMapper().writeValueAsString(res));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         } finally {
             if (writer != null)
                 writer.close();

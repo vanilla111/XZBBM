@@ -54,16 +54,17 @@ public class DiscussServiceImpl implements IDiscussService {
             Discuss discuss = discussMapper.selectDiscussByPrimaryKey(pid);
             if (discuss == null)
                 return ServerResponse.createByErrorMessage("id 对应讨论不存在");
-            List<Discuss> discusses = discussMapper.selectRepliesByPid(pid);
-            List<Upvote> upvotes = upvoteMapper.selectByDList(authorId, discusses);
-
-            //TODO 程序规模较大时，务必更改点赞功能的实现
-            setUpvoteStatus(discusses, upvotes);
+            List<Discuss> replies = discussMapper.selectRepliesByPid(pid);
+            if (replies.size() > 0) {
+                List<Upvote> upvotes = upvoteMapper.selectByDList(authorId, replies);
+                //TODO 程序规模较大时，务必更改点赞功能的实现
+                setUpvoteStatus(replies, upvotes);
+            }
 
             DiscussVo discussVo = new DiscussVo(discuss);
             if (authorId != null && authorId.equals(discuss.getAuthor_id()))
                 discussVo.setMine(true);
-            discussVo.setRepliesList(discusses);
+            discussVo.setRepliesList(replies);
             return ServerResponse.createBySuccess(discussVo);
         }
     }

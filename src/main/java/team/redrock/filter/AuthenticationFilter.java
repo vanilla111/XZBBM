@@ -61,6 +61,7 @@ public class AuthenticationFilter implements Filter {
                 return ;
             }
             String openid = userInfo.getString("openid");
+            System.out.println(openid);
 
             // 首先查询数据库中是否有相应用户
             SqlSession sqlSession = SqlSessionFactoryUtil.getSqlSessionFactory().openSession();
@@ -85,13 +86,20 @@ public class AuthenticationFilter implements Filter {
                         stu.setOpenId(openid);
                         stu.setNick_name(userInfo.getString("nickname"));
                         stu.setHead_url(userInfo.getString("headimgurl"));
+                        System.out.println(stu);
                         Student tempStu = seniorDB.querySeniorByAuthorId(stu.getStu_id());
+                        System.out.println(tempStu);
                         if (tempStu != null) {
                             //第一次登陆 更新openid
+                            System.out.println("test 1");
+                            stu.setId(tempStu.getId());
+                            stu.setJurisdiction(Jurisdiction.SUPERSCHOLAR);
                             seniorDB.updateWXInfoByPrimaryKey(stu);
-                        } else
+                            sqlSession.commit();
+                        } else {
                             juniorDB.insertSelective(stu);
-                        sqlSession.commit();
+                            sqlSession.commit();
+                        }
                     } else {
                         // 获取失败跳转到绑定页面
                         response.sendRedirect(openIdBindStuURL.replaceFirst("\\{openid\\}", openid) + PropertiesUtil.getProperty("bbmIndex"));
@@ -99,6 +107,7 @@ public class AuthenticationFilter implements Filter {
                     }
                 } else if (!userInfo.getString("nickname").equals(stu.getNick_name())
                         || !userInfo.getString("headimgurl").equals(stu.getHead_url())) {
+                    System.out.println("test 2");
                     stu.setNick_name(userInfo.getString("nickname"));
                     stu.setHead_url(userInfo.getString("headimgurl"));
                     juniorDB.updateWXInfoByPrimaryKey(stu);
@@ -106,6 +115,7 @@ public class AuthenticationFilter implements Filter {
                 }
             } else if (!userInfo.getString("nickname").equals(stu.getNick_name())
                     || !userInfo.getString("headimgurl").equals(stu.getHead_url())) {
+                System.out.println("test 3");
                 stu.setNick_name(userInfo.getString("nickname"));
                 stu.setHead_url(userInfo.getString("headimgurl"));
                 seniorDB.updateWXInfoByPrimaryKey(stu);

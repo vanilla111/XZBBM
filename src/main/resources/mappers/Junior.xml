@@ -34,6 +34,9 @@
             <if test="name != null">
                 name,
             </if>
+            <if test="stu_id != null">
+                stu_id,
+            </if>
             <if test="gender != null">
                 gender,
             </if>
@@ -62,6 +65,9 @@
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="name != null">
                 #{name, jdbcType=VARCHAR},
+            </if>
+            <if test="stu_id != null">
+                #{stu_id, jdbcType=VARCHAR},
             </if>
             <if test="gender != null">
                 #{gender, jdbcType=INTEGER},
