@@ -129,6 +129,7 @@ public class UploadServlet extends HttpServlet {
                     logMapper.insertLog(log);
                     tempE = tempE.getCause();
                 }
+                sqlSession.commit();
             }
             ServerResponse res = ServerResponse.createByErrorMessage("网络问题或者服务器问题");
             writer.print(new ObjectMapper().writeValueAsString(res));

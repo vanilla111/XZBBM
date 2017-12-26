@@ -58,6 +58,7 @@
     <mapper resource="mappers/Senior.xml"/>
     <mapper resource="mappers/Discuss.xml"/>
     <mapper resource="mappers/Upvote.xml"/>
+    <mapper resource="mappers/Log.xml"/>
   </mappers>
 
 
