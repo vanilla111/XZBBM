@@ -87,27 +87,7 @@ public class UploadServlet extends HttpServlet {
                         String suffix = fileType.name().toLowerCase();
                         File storeFile = new File(UPLOAD_PATH + uuid + "." + suffix);
                         File thumbFile = new File(UPLOAD_PATH + uuid + "-small." + suffix);
-                        try {
-                            item.write(storeFile);
-                        } catch (Exception e) {
-                            try (SqlSession sqlSession = SqlSessionFactoryUtil.getSqlSessionFactory().openSession()) {
-                                StackTraceElement[] elements = e.getStackTrace();
-                                LogMapper logMapper = sqlSession.getMapper(LogMapper.class);
-                                Log log = new Log();
-                                log.setMsg(e.getMessage());
-                                logMapper.insertLog(log);
-                                for (StackTraceElement element : elements) {
-                                    log.setMsg(element.getClassName() + "." + element.getMethodName());
-                                    logMapper.insertLog(log);
-                                }
-                                Throwable tempE = e.getCause();
-                                while (tempE.getCause() != null) {
-                                    log.setMsg(tempE.getMessage());
-                                    logMapper.insertLog(log);
-                                    tempE = tempE.getCause();
-                                }
-                            }
-                        }
+                        item.write(storeFile);
                         FileInputStream inputStream = new FileInputStream(storeFile);
                         BufferedImage sourceImg = ImageIO.read(inputStream);
                         //图片压缩
@@ -131,6 +111,26 @@ public class UploadServlet extends HttpServlet {
             writer.print(new ObjectMapper().writeValueAsString(res));
         } catch (FileUploadException e) {
             ServerResponse res = ServerResponse.createByErrorMessage("文件上传失败");
+            writer.print(new ObjectMapper().writeValueAsString(res));
+        } catch (Exception e) {
+            try (SqlSession sqlSession = SqlSessionFactoryUtil.getSqlSessionFactory().openSession()) {
+                StackTraceElement[] elements = e.getStackTrace();
+                LogMapper logMapper = sqlSession.getMapper(LogMapper.class);
+                Log log = new Log();
+                log.setMsg(e.getMessage());
+                logMapper.insertLog(log);
+                for (StackTraceElement element : elements) {
+                    log.setMsg(element.getClassName() + "." + element.getMethodName());
+                    logMapper.insertLog(log);
+                }
+                Throwable tempE = e.getCause();
+                while (tempE != null) {
+                    log.setMsg(tempE.getMessage());
+                    logMapper.insertLog(log);
+                    tempE = tempE.getCause();
+                }
+            }
+            ServerResponse res = ServerResponse.createByErrorMessage("网络问题或者服务器问题");
             writer.print(new ObjectMapper().writeValueAsString(res));
         } finally {
             if (writer != null)
