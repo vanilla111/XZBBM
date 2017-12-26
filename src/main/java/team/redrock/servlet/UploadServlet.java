@@ -2,8 +2,6 @@ package team.redrock.servlet;
 
 import net.coobird.thumbnailator.Thumbnails;
 import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileUploadBase;
-import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.ibatis.session.SqlSession;
@@ -99,18 +97,6 @@ public class UploadServlet extends HttpServlet {
                 }
             }
             ServerResponse res = ServerResponse.createBySuccess("文件上传成功", fileNameList);
-            writer.print(new ObjectMapper().writeValueAsString(res));
-        } catch (FileUploadBase.FileSizeLimitExceededException e) {
-            ServerResponse res = ServerResponse.createByErrorMessage("文件大小超过限制(4M)");
-            writer.print(new ObjectMapper().writeValueAsString(res));
-        } catch (FileUploadBase.SizeLimitExceededException e) {
-            ServerResponse res = ServerResponse.createByErrorMessage("上传文件总大小超过限制(5M)");
-            writer.print(new ObjectMapper().writeValueAsString(res));
-        } catch (FileTypeNotSupportException e) {
-            ServerResponse res = ServerResponse.createByErrorMessage("文件类型仅支持 JPEG(JPG),PNG,GIF,BMP,TIFF");
-            writer.print(new ObjectMapper().writeValueAsString(res));
-        } catch (FileUploadException e) {
-            ServerResponse res = ServerResponse.createByErrorMessage("文件上传失败");
             writer.print(new ObjectMapper().writeValueAsString(res));
         } catch (Exception e) {
             try (SqlSession sqlSession = SqlSessionFactoryUtil.getSqlSessionFactory().openSession()) {
