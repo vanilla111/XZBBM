@@ -24,6 +24,9 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 @WebServlet(name = "UploadServlet", urlPatterns = {"/bbm/pic_upload.do"})
 public class UploadServlet extends HttpServlet {
@@ -83,19 +86,20 @@ public class UploadServlet extends HttpServlet {
                         try {
                             item.write(storeFile);
                         } catch (Exception e) {
-                            File tempFile = new File(UPLOAD_PATH + "log.txt");
-                            BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(tempFile));
+                            Logger logger = Logger.getLogger("uploadLogger");
+                            FileHandler fileHandler = new FileHandler("%h/xzbbmLogger.log");
+                            fileHandler.setFormatter(new SimpleFormatter());
+                            logger.addHandler(fileHandler);
                             StackTraceElement[] elements = e.getStackTrace();
-                            out.write(e.getMessage().getBytes());
+                            logger.info(e.getMessage());
                             for (StackTraceElement element : elements) {
-                                out.write((element.getClassName() + element.getMethodName() + "\n").getBytes());
+                                logger.info(element.getClassName() + "." + element.getMethodName());
                             }
                             Throwable tempE = e.getCause();
                             while (tempE.getCause() != null) {
-                                out.write((tempE.getMessage() + "\n").getBytes());
+                                logger.info(tempE.getMessage());
                                 tempE = tempE.getCause();
                             }
-                            out.close();
                         }
                         FileInputStream inputStream = new FileInputStream(storeFile);
                         BufferedImage sourceImg = ImageIO.read(inputStream);
