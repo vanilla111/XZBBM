@@ -83,7 +83,11 @@ public class UploadServlet extends HttpServlet {
                         String suffix = fileType.name().toLowerCase();
                         File storeFile = new File(UPLOAD_PATH + uuid + "." + suffix);
                         File thumbFile = new File(UPLOAD_PATH + uuid + "-small." + suffix);
-                        item.write(storeFile);
+                        try {
+                            item.write(storeFile);
+                        } catch (Exception e) {
+                            throw new IOException(e);
+                        }
                         FileInputStream inputStream = new FileInputStream(storeFile);
                         BufferedImage sourceImg = ImageIO.read(inputStream);
                         //图片压缩
@@ -108,8 +112,6 @@ public class UploadServlet extends HttpServlet {
         } catch (FileUploadException e) {
             ServerResponse res = ServerResponse.createByErrorMessage("文件上传失败");
             writer.print(new ObjectMapper().writeValueAsString(res));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             if (writer != null)
                 writer.close();
@@ -121,6 +123,6 @@ public class UploadServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html;charset=utf-8");
 
-        request.getRequestDispatcher("upload.jsp").forward(request, response);
+        request.getRequestDispatcher("../upload.jsp").forward(request, response);
     }
 }
