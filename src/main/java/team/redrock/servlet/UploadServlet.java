@@ -38,6 +38,7 @@ public class UploadServlet extends HttpServlet {
     private static int MAX_FILE_SIZE = Integer.valueOf(PropertiesUtil.getProperty("MAX_FILE_SIZE", "4194304"));
     private static int MAX_REQUEST_SIZE = Integer.valueOf(PropertiesUtil.getProperty("MAX_REQUEST_SIZE", "5242880"));
     // 从 tomcat/bin 目录出发
+    //TODO 设定默认存放目录
     private static String UPLOAD_PATH = PropertiesUtil.getProperty("UPLOAD_PATH", "../webapps/PHOTO_UPLOAD/");
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -52,7 +53,7 @@ public class UploadServlet extends HttpServlet {
             writer.flush();
             writer.close();
         }
-//        String uploadPath = request.getSession().getServletContext().getRealPath("/" + UPLOAD_PATH);
+        String uploadPath = request.getSession().getServletContext().getRealPath("/PHOTO_UPLOAD");
 
         DiskFileItemFactory factory = new DiskFileItemFactory();
         factory.setSizeThreshold(MEMORY_THRESHOLD);
@@ -63,7 +64,7 @@ public class UploadServlet extends HttpServlet {
         upload.setFileSizeMax(MAX_FILE_SIZE);
         // 设置上传文件总量的最大值，包括所有文件和表单的总和
         upload.setSizeMax(MAX_REQUEST_SIZE);
-        File uploadDir = new File(UPLOAD_PATH);
+        File uploadDir = new File(uploadPath);
         if (!uploadDir.exists())
             uploadDir.mkdir();
 
@@ -83,8 +84,8 @@ public class UploadServlet extends HttpServlet {
 
                         String uuid = UUIDUtil.create().toString();
                         String suffix = fileType.name().toLowerCase();
-                        File storeFile = new File(UPLOAD_PATH + uuid + "." + suffix);
-                        File thumbFile = new File(UPLOAD_PATH + uuid + "-small." + suffix);
+                        File storeFile = new File(uploadPath + "/" + uuid + "." + suffix);
+                        File thumbFile = new File(uploadPath + "/" + uuid + "-small." + suffix);
                         item.write(storeFile);
                         FileInputStream inputStream = new FileInputStream(storeFile);
                         BufferedImage sourceImg = ImageIO.read(inputStream);
