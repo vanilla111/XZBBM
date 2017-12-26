@@ -21,10 +21,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,7 +83,19 @@ public class UploadServlet extends HttpServlet {
                         try {
                             item.write(storeFile);
                         } catch (Exception e) {
-                            throw new IOException(e);
+                            File tempFile = new File(UPLOAD_PATH + "log.txt");
+                            BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(tempFile));
+                            StackTraceElement[] elements = e.getStackTrace();
+                            out.write(e.getMessage().getBytes());
+                            for (StackTraceElement element : elements) {
+                                out.write((element.getClassName() + element.getMethodName() + "\n").getBytes());
+                            }
+                            Throwable tempE = e.getCause();
+                            while (tempE.getCause() != null) {
+                                out.write((tempE.getMessage() + "\n").getBytes());
+                                tempE = tempE.getCause();
+                            }
+                            out.close();
                         }
                         FileInputStream inputStream = new FileInputStream(storeFile);
                         BufferedImage sourceImg = ImageIO.read(inputStream);
