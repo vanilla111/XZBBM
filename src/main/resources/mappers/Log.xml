@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="team.redrock.dao.LogMapper">
+
+    <resultMap type="team.redrock.bean.Log" id="LogResult">
+        <id column="id" jdbcType="INTEGER" javaType="java.lang.Integer" property="id"/>
+        <result column="msg" jdbcType="VARCHAR" javaType="java.lang.String" property="msg"/>
+        <result column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" property="create_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, msg, create_time
+    </sql>
+    
+    <insert id="insertLog" parameterType="team.redrock.bean.Log">
+        INSERT INTO log (msg, create_time) VALUES (#{msg, jdbcType=VARCHAR}, now())
+    </insert>
+
+</mapper>

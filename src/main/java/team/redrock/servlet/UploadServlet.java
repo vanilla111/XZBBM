@@ -6,12 +6,16 @@ import org.apache.commons.fileupload.FileUploadBase;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.ibatis.session.SqlSession;
 import org.codehaus.jackson.map.ObjectMapper;
+import team.redrock.bean.Log;
 import team.redrock.common.FileType;
 import team.redrock.common.ServerResponse;
+import team.redrock.dao.LogMapper;
 import team.redrock.exceptions.FileTypeNotSupportException;
 import team.redrock.util.FileUtils;
 import team.redrock.util.PropertiesUtil;
+import team.redrock.util.SqlSessionFactoryUtil;
 import team.redrock.util.UUIDUtil;
 
 import javax.imageio.ImageIO;
@@ -21,12 +25,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.FileHandler;
-import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 
 @WebServlet(name = "UploadServlet", urlPatterns = {"/bbm/pic_upload.do"})
 public class UploadServlet extends HttpServlet {
@@ -86,19 +90,22 @@ public class UploadServlet extends HttpServlet {
                         try {
                             item.write(storeFile);
                         } catch (Exception e) {
-                            Logger logger = Logger.getLogger("uploadLogger");
-                            FileHandler fileHandler = new FileHandler("%h/xzbbmLogger.log");
-                            fileHandler.setFormatter(new SimpleFormatter());
-                            logger.addHandler(fileHandler);
-                            StackTraceElement[] elements = e.getStackTrace();
-                            logger.info(e.getMessage());
-                            for (StackTraceElement element : elements) {
-                                logger.info(element.getClassName() + "." + element.getMethodName());
-                            }
-                            Throwable tempE = e.getCause();
-                            while (tempE.getCause() != null) {
-                                logger.info(tempE.getMessage());
-                                tempE = tempE.getCause();
+                            try (SqlSession sqlSession = SqlSessionFactoryUtil.getSqlSessionFactory().openSession()) {
+                                StackTraceElement[] elements = e.getStackTrace();
+                                LogMapper logMapper = sqlSession.getMapper(LogMapper.class);
+                                Log log = new Log();
+                                log.setMsg(e.getMessage());
+                                logMapper.insertLog(log);
+                                for (StackTraceElement element : elements) {
+                                    log.setMsg(element.getClassName() + "." + element.getMethodName());
+                                    logMapper.insertLog(log);
+                                }
+                                Throwable tempE = e.getCause();
+                                while (tempE.getCause() != null) {
+                                    log.setMsg(tempE.getMessage());
+                                    logMapper.insertLog(log);
+                                    tempE = tempE.getCause();
+                                }
                             }
                         }
                         FileInputStream inputStream = new FileInputStream(storeFile);
