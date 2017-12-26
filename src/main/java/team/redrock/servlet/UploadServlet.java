@@ -2,18 +2,16 @@ package team.redrock.servlet;
 
 import net.coobird.thumbnailator.Thumbnails;
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadBase;
+import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.ibatis.session.SqlSession;
 import org.codehaus.jackson.map.ObjectMapper;
-import team.redrock.bean.Log;
 import team.redrock.common.FileType;
 import team.redrock.common.ServerResponse;
-import team.redrock.dao.LogMapper;
 import team.redrock.exceptions.FileTypeNotSupportException;
 import team.redrock.util.FileUtils;
 import team.redrock.util.PropertiesUtil;
-import team.redrock.util.SqlSessionFactoryUtil;
 import team.redrock.util.UUIDUtil;
 
 import javax.imageio.ImageIO;
@@ -38,8 +36,7 @@ public class UploadServlet extends HttpServlet {
     private static int MAX_FILE_SIZE = Integer.valueOf(PropertiesUtil.getProperty("MAX_FILE_SIZE", "4194304"));
     private static int MAX_REQUEST_SIZE = Integer.valueOf(PropertiesUtil.getProperty("MAX_REQUEST_SIZE", "5242880"));
     // 从 tomcat/bin 目录出发
-    //TODO 设定默认存放目录
-    private static String UPLOAD_PATH = PropertiesUtil.getProperty("UPLOAD_PATH", "../webapps/PHOTO_UPLOAD/");
+    private static String UPLOAD_PATH = PropertiesUtil.getProperty("UPLOAD_PATH", "/root/tomcat8/webapps/PHOTO_UPLOAD");
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
@@ -53,7 +50,8 @@ public class UploadServlet extends HttpServlet {
             writer.flush();
             writer.close();
         }
-        String uploadPath = request.getSession().getServletContext().getRealPath("../PHOTO_UPLOAD");
+        //String uploadPath = request.getSession().getServletContext().getRealPath("../PHOTO_UPLOAD");
+        String uploadPath = UPLOAD_PATH;
 
         DiskFileItemFactory factory = new DiskFileItemFactory();
         factory.setSizeThreshold(MEMORY_THRESHOLD);
@@ -99,25 +97,19 @@ public class UploadServlet extends HttpServlet {
             }
             ServerResponse res = ServerResponse.createBySuccess("文件上传成功", fileNameList);
             writer.print(new ObjectMapper().writeValueAsString(res));
+        } catch (FileUploadBase.FileSizeLimitExceededException e) {
+            ServerResponse res = ServerResponse.createByErrorMessage("文件大小超过限制(4M)");
+            writer.print(new ObjectMapper().writeValueAsString(res));
+        } catch (FileUploadBase.SizeLimitExceededException e) {
+            ServerResponse res = ServerResponse.createByErrorMessage("上传文件总大小超过限制(5M)");
+            writer.print(new ObjectMapper().writeValueAsString(res));
+        } catch (FileTypeNotSupportException e) {
+            ServerResponse res = ServerResponse.createByErrorMessage("文件类型仅支持 JPEG(JPG),PNG,GIF,BMP,TIFF");
+            writer.print(new ObjectMapper().writeValueAsString(res));
+        } catch (FileUploadException e) {
+            ServerResponse res = ServerResponse.createByErrorMessage("文件上传失败");
+            writer.print(new ObjectMapper().writeValueAsString(res));
         } catch (Exception e) {
-            try (SqlSession sqlSession = SqlSessionFactoryUtil.getSqlSessionFactory().openSession()) {
-                StackTraceElement[] elements = e.getStackTrace();
-                LogMapper logMapper = sqlSession.getMapper(LogMapper.class);
-                Log log = new Log();
-                log.setMsg(e.getMessage());
-                logMapper.insertLog(log);
-                for (StackTraceElement element : elements) {
-                    log.setMsg(element.getClassName() + "." + element.getMethodName());
-                    logMapper.insertLog(log);
-                }
-                Throwable tempE = e.getCause();
-                while (tempE != null) {
-                    log.setMsg(tempE.getMessage());
-                    logMapper.insertLog(log);
-                    tempE = tempE.getCause();
-                }
-                sqlSession.commit();
-            }
             ServerResponse res = ServerResponse.createByErrorMessage("网络问题或者服务器问题");
             writer.print(new ObjectMapper().writeValueAsString(res));
         } finally {
