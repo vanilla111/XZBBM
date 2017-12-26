@@ -53,7 +53,7 @@ public class UploadServlet extends HttpServlet {
             writer.flush();
             writer.close();
         }
-        String uploadPath = request.getSession().getServletContext().getRealPath("/PHOTO_UPLOAD");
+        String uploadPath = request.getSession().getServletContext().getRealPath("../PHOTO_UPLOAD");
 
         DiskFileItemFactory factory = new DiskFileItemFactory();
         factory.setSizeThreshold(MEMORY_THRESHOLD);
