@@ -1,23 +1,24 @@
 package team.redrock.bean;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import team.redrock.common.Jurisdiction;
 
 public class Student {
-    private int id;
-    private String name;
-    private String stu_id;
-    private String gender;
-    private String class_num;
-    private String major;
-    private int grade;
-    private String college;
+    protected int id;
+    protected String name;
+    protected String stu_id;
+    protected String gender;
+    protected String class_num;
+    protected String major;
+    protected int grade;
+    protected String college;
 
-    private String openId;
-    private String head_url;
-    private String nick_name;
+    protected String openId;
+    protected String head_url;
+    protected String nick_name;
 
-    private int identity;
-    private Jurisdiction jurisdiction = null;
+    protected int identity;
+    protected Jurisdiction jurisdiction = null;
 
     public int getId() {
         return id;
@@ -83,6 +84,7 @@ public class Student {
         this.college = college;
     }
 
+    @JsonIgnore
     public String getOpenId() {
         return openId;
     }
@@ -107,6 +109,7 @@ public class Student {
         this.nick_name = nick_name;
     }
 
+    @JsonIgnore
     public int getIdentity() {
         return identity;
     }

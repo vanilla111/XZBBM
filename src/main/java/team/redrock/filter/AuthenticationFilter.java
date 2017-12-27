@@ -86,12 +86,9 @@ public class AuthenticationFilter implements Filter {
                         stu.setOpenId(openid);
                         stu.setNick_name(userInfo.getString("nickname"));
                         stu.setHead_url(userInfo.getString("headimgurl"));
-                        System.out.println(stu);
                         Student tempStu = seniorDB.querySeniorByAuthorId(stu.getStu_id());
-                        System.out.println(tempStu);
-                        if (tempStu != null) {
+                        if (tempStu != null && tempStu.getJurisdiction() == Jurisdiction.SUPERSCHOLAR) {
                             //第一次登陆 更新openid
-                            System.out.println("test 1");
                             stu.setId(tempStu.getId());
                             stu.setJurisdiction(Jurisdiction.SUPERSCHOLAR);
                             seniorDB.updateWXInfoByPrimaryKey(stu);
@@ -107,7 +104,6 @@ public class AuthenticationFilter implements Filter {
                     }
                 } else if (!userInfo.getString("nickname").equals(stu.getNick_name())
                         || !userInfo.getString("headimgurl").equals(stu.getHead_url())) {
-                    System.out.println("test 2");
                     stu.setNick_name(userInfo.getString("nickname"));
                     stu.setHead_url(userInfo.getString("headimgurl"));
                     juniorDB.updateWXInfoByPrimaryKey(stu);
@@ -115,7 +111,6 @@ public class AuthenticationFilter implements Filter {
                 }
             } else if (!userInfo.getString("nickname").equals(stu.getNick_name())
                     || !userInfo.getString("headimgurl").equals(stu.getHead_url())) {
-                System.out.println("test 3");
                 stu.setNick_name(userInfo.getString("nickname"));
                 stu.setHead_url(userInfo.getString("headimgurl"));
                 seniorDB.updateWXInfoByPrimaryKey(stu);

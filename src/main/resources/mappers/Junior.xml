@@ -19,13 +19,17 @@
     <sql id="Base_Column_List">
         id, name, stu_id, gender, class_num, major, grade, openId, head_url, nick_name, identity
     </sql>
-    
+
+    <select id="selectJuniorByPrimaryKey" resultMap="juniorResult" parameterType="java.lang.Integer">
+        SELECT <include refid="Base_Column_List"/> FROM junior WHERE id = #{id}
+    </select>
+
     <select id="queryJuniorByOpenid" resultMap="juniorResult" parameterType="String">
-        SELECT * FROM junior WHERE openId = #{openId}
+        SELECT <include refid="Base_Column_List"/> FROM junior WHERE openId = #{openId}
     </select>
 
     <select id="selectByStuId" resultMap="juniorResult" parameterType="String">
-        SELECT * FROM junior WHERE stu_id = #{stuId}
+        SELECT <include refid="Base_Column_List"/> FROM junior WHERE stu_id = #{stuId}
     </select>
 
     <insert id="insertSelective" parameterType="team.redrock.bean.Student">

@@ -7,4 +7,5 @@ public interface JuniorMapper {
     Student queryJuniorByOpenid(String openId);
     int updateWXInfoByPrimaryKey(Student student);
     int insertSelective(Student student);
+    Student selectJuniorByPrimaryKey(Integer id);
 }
