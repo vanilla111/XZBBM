@@ -97,7 +97,7 @@ public class SeniorStudent extends Student {
         int nowTerm = Integer.valueOf(sdf.format(new Date()));
         String termS = String.valueOf(term);
         //设置当月或者下一月学霸身份有效
-        if (termS.length() == 6 || term == nowTerm || plusTerm(term) == nowTerm)
+        if (termS.length() == 6 && (term == nowTerm || plusTerm(term) == nowTerm))
             setIdentity(2);
         else
             setIdentity(1);

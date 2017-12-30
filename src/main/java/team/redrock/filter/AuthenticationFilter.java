@@ -2,6 +2,7 @@ package team.redrock.filter;
 
 import org.apache.ibatis.session.SqlSession;
 import org.json.JSONObject;
+import team.redrock.bean.SeniorStudent;
 import team.redrock.bean.Student;
 import team.redrock.common.Jurisdiction;
 import team.redrock.dao.JuniorMapper;
@@ -85,10 +86,11 @@ public class AuthenticationFilter implements Filter {
                         stu.setStu_id(stuData.getString("usernumber"));
                         stu.setGender(stuData.getString("gender"));
                         stu.setName(stuData.getString("realname"));
+                        stu.setGender(sex);
                         stu.setOpenId(openid);
                         stu.setNick_name(nickname);
                         stu.setHead_url(headimgurl);
-                        Student tempStu = seniorDB.querySeniorByAuthorId(stu.getStu_id());
+                        SeniorStudent tempStu = seniorDB.querySeniorByAuthorId(stu.getStu_id());
                         if (tempStu != null && tempStu.getJurisdiction() == Jurisdiction.SUPERSCHOLAR) {
                             //第一次登陆 更新openid
                             stu.setId(tempStu.getId());
