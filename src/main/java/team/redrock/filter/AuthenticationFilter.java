@@ -23,6 +23,8 @@ public class AuthenticationFilter implements Filter {
 
     private static String openIdBindStuURL = "https://wx.idsbllp.cn/MagicLoop/index.php?s=/addon/Bind/Bind/bind/openid/{openid}/token/gh_68f0a1ffc303&redirect=";
 
+    private static String redirectURI = "https://wx.idsbllp.cn/MagicLoop/index.php?s=/addon/Api/Api/oauth&redirect=";
+
     private static String notFoundUrl = PropertiesUtil.getProperty("bbmNotFound");
 
     public void destroy() {
@@ -31,8 +33,6 @@ public class AuthenticationFilter implements Filter {
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) resp;
-        response.setHeader("Access-Control-Allow-Origin", "*");
-        response.setHeader("Access-Control-Allow-Methods", "POST, GET, DELETE, PUT");
         //测试代码
 //        Student student = new Student();
 //        student.setStu_id("2015211516");
@@ -46,21 +46,24 @@ public class AuthenticationFilter implements Filter {
         if (stu == null) {
             // 如果没有则获取openid
             // 判断请求中是否有 code
-            String code = request.getParameter("code");
-            if ( code == null || "".equals(code)) {
+            String oauthStatus = request.getParameter("oauthstatus");
+            if ( oauthStatus == null || "".equals(oauthStatus) || !"success".equals(oauthStatus)) {
                 //如果没有code 跳转 snsapi_userinfo
                 String redirectUrl = WXUtil.getAuthorizeUrl(true);
                 response.sendRedirect(redirectUrl);
                 return ;
             }
 
-            // 用 code 换取 openId access_token
-            JSONObject userInfo = WXUtil.getWebUserInfo(code);
-            if (userInfo == null) {
-                response.sendRedirect(notFoundUrl);
-                return ;
-            }
-            String openid = userInfo.getString("openid");
+//            // 用 code 换取 openId access_token
+//            userInfo = WXUtil.getWebUserInfo(code);
+//            if (userInfo == null) {
+//                response.sendRedirect(notFoundUrl);
+//                return ;
+//            }
+            String openid = request.getParameter("openid");
+            String nickname = request.getParameter("nickname");
+            String sex = request.getParameter("sex");
+            String headimgurl = request.getParameter("headimgurl");
 
             // 首先查询数据库中是否有相应用户
             SqlSession sqlSession = SqlSessionFactoryUtil.getSqlSessionFactory().openSession();
@@ -83,8 +86,8 @@ public class AuthenticationFilter implements Filter {
                         stu.setGender(stuData.getString("gender"));
                         stu.setName(stuData.getString("realname"));
                         stu.setOpenId(openid);
-                        stu.setNick_name(userInfo.getString("nickname"));
-                        stu.setHead_url(userInfo.getString("headimgurl"));
+                        stu.setNick_name(nickname);
+                        stu.setHead_url(headimgurl);
                         Student tempStu = seniorDB.querySeniorByAuthorId(stu.getStu_id());
                         if (tempStu != null && tempStu.getJurisdiction() == Jurisdiction.SUPERSCHOLAR) {
                             //第一次登陆 更新openid
@@ -101,17 +104,17 @@ public class AuthenticationFilter implements Filter {
                         response.sendRedirect(openIdBindStuURL.replaceFirst("\\{openid\\}", openid) + PropertiesUtil.getProperty("bbmIndex"));
                         return ;
                     }
-                } else if (!userInfo.getString("nickname").equals(stu.getNick_name())
-                        || !userInfo.getString("headimgurl").equals(stu.getHead_url())) {
-                    stu.setNick_name(userInfo.getString("nickname"));
-                    stu.setHead_url(userInfo.getString("headimgurl"));
+                } else if (!nickname.equals(stu.getNick_name())
+                        || !headimgurl.equals(stu.getHead_url())) {
+                    stu.setNick_name(nickname);
+                    stu.setHead_url(headimgurl);
                     juniorDB.updateWXInfoByPrimaryKey(stu);
                     sqlSession.commit();
                 }
-            } else if (!userInfo.getString("nickname").equals(stu.getNick_name())
-                    || !userInfo.getString("headimgurl").equals(stu.getHead_url())) {
-                stu.setNick_name(userInfo.getString("nickname"));
-                stu.setHead_url(userInfo.getString("headimgurl"));
+            } else if (!nickname.equals(stu.getNick_name())
+                    || !headimgurl.equals(stu.getHead_url())) {
+                stu.setNick_name(nickname);
+                stu.setHead_url(headimgurl);
                 seniorDB.updateWXInfoByPrimaryKey(stu);
                 sqlSession.commit();
             }

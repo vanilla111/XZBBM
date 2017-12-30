@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -88,7 +89,18 @@ public class UploadServlet extends HttpServlet {
                         FileInputStream inputStream = new FileInputStream(storeFile);
                         BufferedImage sourceImg = ImageIO.read(inputStream);
                         //图片压缩
-                        Thumbnails.of(storeFile).size(sourceImg.getWidth(), sourceImg.getHeight()).outputFormat(suffix).toFile(thumbFile);
+                        FileChannel fc = inputStream.getChannel();
+                        if (fc.size() > 1048576 && fc.size() <= 2621440) {
+                            // 1M - 2.5M
+                            Thumbnails.of(storeFile).scale(0.5f).outputQuality(0.5f).outputFormat(suffix).toFile(thumbFile);
+                        } else if (fc.size() > 2621440) {
+                            // > 2.5M
+                            Thumbnails.of(storeFile).scale(0.5f).outputQuality(0.25f).outputFormat(suffix).toFile(thumbFile);
+                        } else {
+                            // <= 1M
+                            Thumbnails.of(storeFile).scale(0.5f).outputQuality(0.75f).outputFormat(suffix).toFile(thumbFile);
+                        }
+                        fc.close();
                         inputStream.close();
                         fileNameList.add(new String[]{storeFile.getName(), thumbFile.getName()});
                         item.delete();
