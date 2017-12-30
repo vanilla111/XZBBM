@@ -30,7 +30,7 @@ public class MyBBMServlet extends HttpServlet {
         String page = request.getParameter("page");
         String size = request.getParameter("pageSize");
         try (PrintWriter writer = response.getWriter()) {
-            int pageNum = BBMUtil.stringToInteger(page, 1), pageSize = BBMUtil.stringToInteger(size, 30);
+            int pageNum = BBMUtil.stringToInteger(page, 1), pageSize = BBMUtil.stringToInteger(size, 10);
             ServerResponse serverResponse = null;
             IDiscussService service = new DiscussServiceImpl();
             if ("question".equals(requestType)) {

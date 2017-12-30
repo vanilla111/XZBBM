@@ -31,7 +31,7 @@ public class IndexServlet extends HttpServlet {
         String size = request.getParameter("pageSize");
         try (PrintWriter writer = response.getWriter()) {
             int pageNum = BBMUtil.stringToInteger(page, 1);
-            int pageSize = BBMUtil.stringToInteger(size, 50);
+            int pageSize = BBMUtil.stringToInteger(size, 10);
             ServerResponse serverResponse;
             IDiscussService service = new DiscussServiceImpl();
             if ("hot".equals(type)) {

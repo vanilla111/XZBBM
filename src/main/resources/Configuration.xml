@@ -44,7 +44,7 @@
         <property name="poolMaximumCheckoutTime" value="20000"/>
         <!--如果获取连接花费的相当长的时间，它会给连接池打印状态日志并重新尝试获取一个连接
         （避免在误配置的情况下一直安静的失败），默认值：20000 毫秒（即 20 秒)-->
-        <property name="poolTimeToWait" value="30000"/>
+        <property name="poolTimeToWait" value="20000"/>
         <!--线程获取到的是一个坏的连接，那么这个数据源允许这 个线程尝试重新获取一个新的连接，但是这个重新尝试的次数不应该超过 默认值 3-->
         <property name="poolMaximumLocalBadConnectionTolerance" value="3"/>
 

@@ -1,0 +1,94 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+@media screen and (min-width:960px ){
+    .container{height: 1334px;}
+}
+
+@media screen and (max-width:960px ){
+    .container{height: 100vh;}
+}
+
+input{
+    border: none;
+    outline: medium;
+    width: 70%;
+    color: #dba87b;
+    margin-top: 1.5vh;
+}
+
+::-webkit-input-placeholder { /* Chrome */
+  color: #dba87b;
+}
+:-ms-input-placeholder { /* IE 10+ */
+  color: #dba87b;
+}
+::-moz-placeholder { /* Firefox 19+ */
+  color: #dba87b;
+  opacity: 1;
+}
+:-moz-placeholder { /* Firefox 4 - 18 */
+  color: #dba87b;
+  opacity: 1;
+}
+
+
+main{
+    max-width: 750px;
+    max-height:1334px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.contianer{
+    width: 100%;
+    height: 100vh;
+    background: url(../imgs/background.png) no-repeat;
+    background-size: 100% 100%;
+}
+
+.banner{
+    margin: 0 auto;
+    width: 92.4%;
+    background-size: 100%;
+    display: block;
+    padding-top: 9vh; 
+}
+
+.login{
+    width: 71.6%;
+    margin: 0 auto;
+    padding-top: 9vh;
+    text-align: center;
+}
+
+.user,.password{
+    width: 100%;
+    height: 6vh;
+}
+
+.user{
+    background: url(../imgs/user.png) no-repeat;
+    background-size: 100%;
+}
+
+.password{
+    margin-top: 2.6vh;
+    background: url(../imgs/password.png) no-repeat;
+    background-size: 100%;
+}
+
+.loginBtn{
+    width: 100%;
+    margin-top:7vh;
+}
+
+
+
+
+
+
+
+

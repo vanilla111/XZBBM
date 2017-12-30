@@ -34,12 +34,12 @@ public class AuthenticationFilter implements Filter {
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Methods", "POST, GET, DELETE, PUT");
         //测试代码
-        Student student = new Student();
-        student.setStu_id("2015211516");
-        student.setNick_name("admin");
-        student.setHead_url("www.baidu.com");
-        student.setIdentity(Jurisdiction.SUPERSCHOLAR.getType());
-        request.getSession().setAttribute("user", student);
+//        Student student = new Student();
+//        student.setStu_id("2015211516");
+//        student.setNick_name("admin");
+//        student.setHead_url("www.baidu.com");
+//        student.setIdentity(Jurisdiction.SUPERSCHOLAR.getType());
+//        request.getSession().setAttribute("user", student);
 
         // 判断session中是否有该用户
         Student stu = (Student) request.getSession().getAttribute("user");
@@ -61,7 +61,6 @@ public class AuthenticationFilter implements Filter {
                 return ;
             }
             String openid = userInfo.getString("openid");
-            System.out.println(openid);
 
             // 首先查询数据库中是否有相应用户
             SqlSession sqlSession = SqlSessionFactoryUtil.getSqlSessionFactory().openSession();

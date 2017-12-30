@@ -36,7 +36,7 @@ public class UploadServlet extends HttpServlet {
     private static int MAX_FILE_SIZE = Integer.valueOf(PropertiesUtil.getProperty("MAX_FILE_SIZE", "4194304"));
     private static int MAX_REQUEST_SIZE = Integer.valueOf(PropertiesUtil.getProperty("MAX_REQUEST_SIZE", "5242880"));
     // 从 tomcat/bin 目录出发
-    private static String UPLOAD_PATH = PropertiesUtil.getProperty("UPLOAD_PATH", "/root/tomcat8/webapps/PHOTO_UPLOAD");
+    private static String UPLOAD_PATH = PropertiesUtil.getProperty("UPLOAD_PATH", "/root/uploadfile");
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
@@ -123,6 +123,8 @@ public class UploadServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html;charset=utf-8");
 
-        request.getRequestDispatcher("../upload.jsp").forward(request, response);
+        try (PrintWriter writer = response.getWriter()) {
+            writer.print(new ObjectMapper().writeValueAsString(ServerResponse.createByErrorMessage("非法访问")));
+        }
     }
 }

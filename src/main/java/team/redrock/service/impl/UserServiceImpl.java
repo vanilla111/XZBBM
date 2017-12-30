@@ -8,6 +8,7 @@ import team.redrock.dao.JuniorMapper;
 import team.redrock.dao.SeniorMapper;
 import team.redrock.service.IUserService;
 import team.redrock.util.SqlSessionFactoryUtil;
+import team.redrock.vo.StudentVo;
 
 public class UserServiceImpl implements IUserService {
 
@@ -23,11 +24,12 @@ public class UserServiceImpl implements IUserService {
                 // 查找其他人
                 JuniorMapper juniorMapper = sqlSession.getMapper(JuniorMapper.class);
                 Student student = juniorMapper.selectJuniorByPrimaryKey(id);
-                serverResponse = ServerResponse.createBySuccess(student);
+                if (student != null) {
+                    StudentVo studentVo = new StudentVo(student);
+                    serverResponse = ServerResponse.createBySuccess(studentVo);
+                } else
+                    serverResponse = ServerResponse.createByErrorMessage("为找到该学生信息");
             }
-
-            if (serverResponse == null)
-                return ServerResponse.createByErrorMessage("查找失败");
 
             return serverResponse;
         }

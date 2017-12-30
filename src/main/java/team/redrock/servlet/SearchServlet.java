@@ -31,7 +31,7 @@ public class SearchServlet extends HttpServlet {
 
         try (PrintWriter writer = response.getWriter()) {
             int pageNum = BBMUtil.stringToInteger(page, 1);
-            int pageSize = BBMUtil.stringToInteger(size, 30);
+            int pageSize = BBMUtil.stringToInteger(size, 10);
             ServerResponse serverResponse;
             if (keyWord != null) keyWord = keyWord.trim();
             if (tag != null) tag = tag.trim();
