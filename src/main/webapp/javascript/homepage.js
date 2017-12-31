@@ -702,7 +702,7 @@ function imgtobig(m) {
     for (let i = 0; i < m.length; i++) {
         m[i].onclick = function() {
             console.log(m);
-            biggerimg.style.backgroundImage = "url(" + picPath + "" + m[i].src + ")"
+            biggerimg.style.backgroundImage = "url(" + m[i].src + ")";
             biggerimgs.style.display = 'block';
         }
     }

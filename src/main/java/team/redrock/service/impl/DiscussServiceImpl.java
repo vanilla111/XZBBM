@@ -58,7 +58,7 @@ public class DiscussServiceImpl implements IDiscussService {
             if (replies.size() > 0) {
                 List<Upvote> upvotes = upvoteMapper.selectByDList(authorId, replies);
                 //TODO 程序规模较大时，务必更改点赞功能的实现
-                setUpvoteStatus(replies, upvotes);
+                setUpvoteStatus(replies, upvotes, authorId);
             }
 
             DiscussVo discussVo = new DiscussVo(discuss);
@@ -167,13 +167,13 @@ public class DiscussServiceImpl implements IDiscussService {
         }
     }
 
-    private void setUpvoteStatus(List<Discuss> discussList, List<Upvote> upvoteList) {
+    private void setUpvoteStatus(List<Discuss> discussList, List<Upvote> upvoteList, String authorId) {
         for (int i = 0; i < discussList.size(); i++) {
             Discuss discuss = discussList.get(i);
             for (int j = 0; j < upvoteList.size(); j++) {
                 Upvote upvote = upvoteList.get(j);
-                if (discuss.getId() == upvote.getDid() && discuss.getAuthor_id().equals(upvote.getAid()))
-                    discussList.get(i).setUpvote(true);
+                if (discuss.getId() == upvote.getDid() && upvote.getAid().equals(authorId))
+                    discuss.setUpvote(true);
             }
         }
     }
