@@ -60,12 +60,21 @@ var qimgfile = document.querySelector("#qimgfile");
 var main = document.querySelector("#main");
 var upphoto = document.querySelector('.upphoto');
 var uploadBtn = document.querySelector('.uploadBtn');
+var allnew = document.querySelector('.allnew');
+var allhot = document.querySelector('.allhot');
+var allmyq = document.querySelector('.allmyq');
+var allmya = document.querySelector('.allmya');
+var nloadmore= document.querySelector('.nloadmore');
+var hloadmore= document.querySelector('.hloadmore');
+var myqloadmore= document.querySelector('.myqloadmore');
+var myaloadmore= document.querySelector('.myaloadmore');
+
 var dataUrl, collegetag, college_tag = 233,
     arr, newquestion, idnum,
     targetid, dataurl, like, likeNum, qformdata, aformdata, orgPic, thumbPic, action = picPath + 'uploadfile/';
 var nick_name = [];
 var tag = new Array();
-var pic_name = new Array();
+var pic_thumb = new Array();
 var reply_count = new Array();
 var like_count = new Array();
 var content = new Array();
@@ -76,6 +85,10 @@ var ansid = new Array();
 var like = new Array();
 var likeNum = new Array();
 var titlee = [];
+var npage = 1,
+    hpage = 1,
+    myqpage = 1,
+    myapage = 1;
 var w = document.documentElement.clientWidth;
 var h = document.documentElement.clientHeight;
 
@@ -228,15 +241,145 @@ function gettime(t) {
     var hour = d.getHours();
     var min = d.getMinutes();
     var second = d.getSeconds();
-    if(hour < 10) hour = '0' + hour;
-    if(min < 10) min = '0' + min;
-    if(second < 10) second = '0' + second;
+    if (hour < 10) hour = '0' + hour;
+    if (min < 10) min = '0' + min;
+    if (second < 10) second = '0' + second;
     var date;
     if (now.getFullYear() == year)
         date = month + "-" + day;
     else
         date = year + "-" + month + "-" + day;
-    return ( date + " " + hour + ":" + min + ":" + second);
+    return (date + " " + hour + ":" + min + ":" + second);
+}
+
+nloadmore.onclick = function() {
+    npage = npage + 1;
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", basePath + 'index?page=' + npage, true);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            arr = JSON.parse(xhr.responseText);
+            var size = arr.data.size;
+            if (arr.data.pages >= npage) {
+                for (var i = 0; i < size; i++) {
+                    if (arr.data.list[i].pic_thumb == 'undefined') {
+                        pic_thumb[i] = 2333;
+                    } else {
+                        pic_thumb[i] = arr.data.list[i].pic_thumb;
+                    }
+                    nick_name[i] = arr.data.list[i].nick_name;
+                    if (arr.data.list[i].tag == "undefined") {
+                        tag[i] = '';
+
+                    } else {
+                        tag[i] = arr.data.list[i].tag;
+                    }
+                    content[i] = arr.data.list[i].content;
+                    titlee[i] = arr.data.list[i].title;
+                    reply_count[i] = arr.data.list[i].reply_count;
+                    like_count[i] = arr.data.list[i].like_count;
+                    id[i] = arr.data.list[i].id;
+                    create_time[i] = gettime(arr.data.list[i].create_time);
+                    head_url[i] = arr.data.list[i].head_url;
+                    var n = document.createElement('div');
+                    newquestions.appendChild(n);
+                    n.className = 'newquestion';
+                    n.innerHTML = '<div class="person">' +
+                        '<div class="avatar"><img class="myhead" src="' + head_url[i] + '"></div>' +
+                        '<div class="info">' +
+                        '<div class="info_name"><p>' + nick_name[i] + '</p></div>' +
+                        '<div class="info_time"><p>' + create_time[i] + '</p></div></div>' +
+                        '<div class="info_college"><P>' + tag[i] + '</P></div></div>' +
+                        '<div class="questionMiddle">' +
+                        '<div class="content"><p>' + titlee[i] + '</p></div>' +
+                        '<div class="real_content"><p>' + content[i] + '</p></div>' +
+                        '<div class="questionImg"><img src="' + action + pic_thumb[i] + '"></div></div>' +
+                        '<div class="bottom">' +
+                        '<div class="comment"><div class="commentIcon"></div>' +
+                        '<p class="commentNum">' + reply_count[i] + '</p></div></div>'
+
+                    if (pic_thumb[i] == 2333) {
+                        var g = document.querySelectorAll(".questionImg");
+                        g[i].style.display = 'none';
+                    }
+                    newquestion = document.querySelectorAll(".newquestion");
+                    var d = document.createElement('div');
+                    newquestion[i].appendChild(d);
+                    d.style.display = 'none';
+                    d.innerHTML = id[i];
+                }
+                toqdetails(newquestion);
+            } else {
+                alert('没有更多数据咯~')
+            }
+        }
+    }
+    xhr.send();
+}
+
+hloadmore.onclick = function() {
+    hpage = hpage + 1;
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", basePath + 'index?type=hot&page=' + hpage, true);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            arr = JSON.parse(xhr.responseText);
+            var size = arr.data.size;
+            if (arr.data.pages >= hpage) {
+                for (var i = 0; i < size; i++) {
+                    if (arr.data.list[i].pic_thumb == 'undefined') {
+                        pic_thumb[i] = 2335;
+                    } else {
+                        pic_thumb[i] = arr.data.list[i].pic_thumb;
+                    }
+                    if (arr.data.list[i].tag == "undefined") {
+                        tag[i] = '';
+
+                    } else {
+                        tag[i] = arr.data.list[i].tag;
+                    }
+                    nick_name[i] = arr.data.list[i].nick_name;
+                    content[i] = arr.data.list[i].content;
+                    reply_count[i] = arr.data.list[i].reply_count;
+                    like_count[i] = arr.data.list[i].like_count;
+                    create_time[i] = arr.data.list[i].create_time;
+                    head_url[i] = arr.data.list[i].head_url;
+                    titlee[i] = arr.data.list[i].title;
+                    id[i] = arr.data.list[i].id;
+                    var n = document.createElement('div');
+                    hotquestions.appendChild(n);
+                    n.className = 'hotquestion';
+                    n.innerHTML = '<div class="person">' +
+                        '<div class="avatar"><img class="myhead" src="' + head_url[i] + '"></div>' +
+                        '<div class="info">' +
+                        '<div class="info_name"><p>' + nick_name[i] + '</p></div>' +
+                        '<div class="info_time"><p>' + gettime(create_time[i]) + '</p></div></div>' +
+                        '<div class="info_college"><P>' + tag[i] + '</P></div></div>' +
+                        '<div class="questionMiddle">' +
+                        '<div class="content"><p>' + titlee[i] + '</p></div>' +
+                        '<div class="real_content"><p>' + content[i] + '</p></div>' +
+                        '<div class="hotquestionImg"><img src="' + action + pic_thumb[i] + '"></div></div>' +
+                        '<div class="bottom">' +
+                        '<div class="comment"><div class="commentIcon"></div>' +
+                        '<p class="commentNum">' + reply_count[i] + '</p></div></div>'
+
+                    if (pic_thumb[i] == 2335) {
+                        var g2 = document.querySelectorAll(".hotquestionImg");
+                        g2[i].style.display = 'none';
+                    }
+                    var hotquestion = document.querySelectorAll(".hotquestion");
+                    var d = document.createElement('div');
+                    hotquestion[i].appendChild(d);
+                    d.style.display = 'none';
+                    d.innerHTML = id[i];
+                }
+                toqdetails(newquestion);
+            } else {
+                alert('没有更多数据咯~')
+            }
+        }
+    }
+    xhr.send();
 }
 
 function questionshow(url) {
@@ -247,11 +390,14 @@ function questionshow(url) {
         if (xhr.readyState == 4 && xhr.status == 200) {
             arr = JSON.parse(xhr.responseText);
             var size = arr.data.size;
+            if (size < 10) {
+                nloadmore.style.display = 'none';
+            }
             for (var i = 0; i < size; i++) {
-                if (arr.data.list[i].pic_name == 'undefined') {
-                    pic_name[i] = 2333;
+                if (arr.data.list[i].pic_thumb == 'undefined') {
+                    pic_thumb[i] = 2333;
                 } else {
-                    pic_name[i] = arr.data.list[i].pic_name;
+                    pic_thumb[i] = arr.data.list[i].pic_thumb;
                 }
                 nick_name[i] = arr.data.list[i].nick_name;
                 if (arr.data.list[i].tag == "undefined") {
@@ -279,12 +425,12 @@ function questionshow(url) {
                     '<div class="questionMiddle">' +
                     '<div class="content"><p>' + titlee[i] + '</p></div>' +
                     '<div class="real_content"><p>' + content[i] + '</p></div>' +
-                    '<div class="questionImg"><img src="' + action + pic_name[i] + '"></div></div>' +
+                    '<div class="questionImg"><img src="' + action + pic_thumb[i] + '"></div></div>' +
                     '<div class="bottom">' +
                     '<div class="comment"><div class="commentIcon"></div>' +
                     '<p class="commentNum">' + reply_count[i] + '</p></div></div>'
 
-                if (pic_name[i] == 2333) {
+                if (pic_thumb[i] == 2333) {
                     var g = document.querySelectorAll(".questionImg");
                     g[i].style.display = 'none';
                 }
@@ -308,11 +454,14 @@ function myquestionshow() {
         if (xhr.readyState == 4 && xhr.status == 200) {
             arr = JSON.parse(xhr.responseText);
             var size = arr.data.size;
+            if (size < 10) {
+                myqloadmore.style.display = 'none';
+            }
             for (var i = 0; i < size; i++) {
-                if (arr.data.list[i].pic_name == 'undefined') {
-                    pic_name[i] = 2334;
+                if (arr.data.list[i].pic_thumb == 'undefined') {
+                    pic_thumb[i] = 2334;
                 } else {
-                    pic_name[i] = arr.data.list[i].pic_name;
+                    pic_thumb[i] = arr.data.list[i].pic_thumb;
                 }
                 if (arr.data.list[i].tag == "undefined") {
                     tag[i] = '';
@@ -340,11 +489,11 @@ function myquestionshow() {
                     '<div class="questionMiddle">' +
                     '<div class="mycontent"><p>' + titlee[i] + '</p></div>' +
                     '<div class="real_content"><p>' + content[i] + '</p></div>' +
-                    '<div class="myquestionImg"><img src="' + action + pic_name[i] + '"></div></div>' +
+                    '<div class="myquestionImg"><img src="' + action + pic_thumb[i] + '"></div></div>' +
                     '<div class="bottom">' +
                     '<div class="comment"><div class="commentIcon"></div>' +
                     '<p class="mycommentNum">' + reply_count[i] + '</p></div></div>';
-                if (pic_name[i] == 2334) {
+                if (pic_thumb[i] == 2334) {
                     var g1 = document.querySelectorAll(".myquestionImg");
                     g1[i].style.display = 'none';
                 }
@@ -362,24 +511,27 @@ function myquestionshow() {
 }
 
 newq.onclick = function() {
-    newquestions.style.display = 'block';
-    hotquestions.style.display = 'none';
+    scrollTo(0, 0);
+    allnew.style.display = 'block';
+    allhot.style.display = 'none';
     newq.style.backgroundImage = 'url(' + picPath + 'imgs/Chosebg.png)';
     hotq.style.backgroundImage = 'url(' + picPath + 'imgs/noChosebg.png)';
     hotq.style.color = 'black';
     newq.style.color = 'white';
-
+    npage = 1;
     questionshow(basePath + 'index');
 }
 
 
 hotq.onclick = function() {
-    newquestions.style.display = 'none';
-    hotquestions.style.display = 'block';
+    scrollTo(0, 0);
+    allnew.style.display = 'none';
+    allhot.style.display = 'block';
     hotq.style.backgroundImage = 'url(' + picPath + 'imgs/Chosebg.png)';
     newq.style.backgroundImage = 'url(' + picPath + 'imgs/noChosebg.png)';
     newq.style.color = 'black';
     hotq.style.color = 'white';
+    hpage = 1;
     hotquestionshow();
 
 }
@@ -393,10 +545,13 @@ function hotquestionshow() {
             arr = JSON.parse(xhr.responseText);
             var size = arr.data.size;
             for (var i = 0; i < size; i++) {
-                if (arr.data.list[i].pic_name == 'undefined') {
-                    pic_name[i] = 2335;
+                if (size < 10) {
+                    hloadmore.style.display = 'none';
+                }
+                if (arr.data.list[i].pic_thumb == 'undefined') {
+                    pic_thumb[i] = 2335;
                 } else {
-                    pic_name[i] = arr.data.list[i].pic_name;
+                    pic_thumb[i] = arr.data.list[i].pic_thumb;
                 }
                 if (arr.data.list[i].tag == "undefined") {
                     tag[i] = '';
@@ -424,12 +579,12 @@ function hotquestionshow() {
                     '<div class="questionMiddle">' +
                     '<div class="content"><p>' + titlee[i] + '</p></div>' +
                     '<div class="real_content"><p>' + content[i] + '</p></div>' +
-                    '<div class="hotquestionImg"><img src="' + action + pic_name[i] + '"></div></div>' +
+                    '<div class="hotquestionImg"><img src="' + action + pic_thumb[i] + '"></div></div>' +
                     '<div class="bottom">' +
                     '<div class="comment"><div class="commentIcon"></div>' +
                     '<p class="commentNum">' + reply_count[i] + '</p></div></div>'
 
-                if (pic_name[i] == 2335) {
+                if (pic_thumb[i] == 2335) {
                     var g2 = document.querySelectorAll(".hotquestionImg");
                     g2[i].style.display = 'none';
                 }
@@ -445,20 +600,154 @@ function hotquestionshow() {
     xhr.send();
 }
 
+myqloadmore.onclick = function() {
+    myqpage = myqpage + 1
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", basePath + 'mybbm?type=question&page='+myqpage, true);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            arr = JSON.parse(xhr.responseText);
+            var size = arr.data.size;
+            if (arr.data.pages >= myqpage) {
+            for (var i = 0; i < size; i++) {
+                
+                    if (arr.data.list[i].pic_thumb == 'undefined') {
+                        pic_thumb[i] = 2334;
+                    } else {
+                        pic_thumb[i] = arr.data.list[i].pic_thumb;
+                    }
+                    if (arr.data.list[i].tag == "undefined") {
+                        tag[i] = '';
+
+                    } else {
+                        tag[i] = arr.data.list[i].tag;
+                    }
+                    nick_name[i] = arr.data.list[i].nick_name;
+                    content[i] = arr.data.list[i].content;
+                    reply_count[i] = arr.data.list[i].reply_count;
+                    like_count[i] = arr.data.list[i].like_count;
+                    create_time[i] = arr.data.list[i].create_time;
+                    head_url[i] = arr.data.list[i].head_url;
+                    titlee[i] = arr.data.list[i].title;
+                    id[i] = arr.data.list[i].id;
+                    var n = document.createElement('div');
+                    myquestion_contents.appendChild(n);
+                    n.className = 'myquestion';
+                    n.innerHTML = '<div class="person">' +
+                        '<div class="my_avatar"><img class="myhead" src="' + head_url[i] + '"></div>' +
+                        '<div class="my_info">' +
+                        '<div class="myinfo_name"><p>' + nick_name[i] + '</p></div>' +
+                        '<div class="myinfo_time"><p>' + gettime(create_time[i]) + '</p></div></div>' +
+                        '<div class="myinfo_college"><P>' + tag[i] + '</P></div></div>' +
+                        '<div class="questionMiddle">' +
+                        '<div class="mycontent"><p>' + titlee[i] + '</p></div>' +
+                        '<div class="real_content"><p>' + content[i] + '</p></div>' +
+                        '<div class="myquestionImg"><img src="' + action + pic_thumb[i] + '"></div></div>' +
+                        '<div class="bottom">' +
+                        '<div class="comment"><div class="commentIcon"></div>' +
+                        '<p class="mycommentNum">' + reply_count[i] + '</p></div></div>';
+                    if (pic_thumb[i] == 2334) {
+                        var g1 = document.querySelectorAll(".myquestionImg");
+                        g1[i].style.display = 'none';
+                    }
+                    var myquestion = document.querySelectorAll(".myquestion");
+                    var d = document.createElement('div');
+                    myquestion[i].appendChild(d);
+                    d.style.display = 'none';
+                    d.innerHTML = id[i];
+                }
+                toqdetails(newquestion);
+            } else {
+                alert('没有更多数据咯~')
+            }
+        }
+    }
+
+    xhr.send();
+}
+
+myaloadmore.onclick = function() {
+    myapage = myapage + 1
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", basePath + 'mybbm?type=answer&page='+myapage, true);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            arr = JSON.parse(xhr.responseText);
+            var size = arr.data.size;
+            if (arr.data.pages >= myapage) {
+            for (var i = 0; i < size; i++) {
+                
+                    if (arr.data.list[i].pic_thumb == 'undefined') {
+                        pic_thumb[i] = 2336;
+                    } else {
+                        pic_thumb[i] = arr.data.list[i].pic_thumb;
+                    }
+                    nick_name[i] = arr.data.list[i].nick_name;
+                    if (arr.data.list[i].tag == "undefined") {
+                        tag[i] = '';
+
+                    } else {
+                        tag[i] = arr.data.list[i].tag;
+                    }
+                    nick_name[i] = arr.data.list[i].nick_name;
+                    content[i] = arr.data.list[i].content;
+                    reply_count[i] = arr.data.list[i].reply_count;
+                    like_count[i] = arr.data.list[i].like_count;
+                    create_time[i] = arr.data.list[i].create_time;
+                    head_url[i] = arr.data.list[i].head_url;
+                    titlee[i] = arr.data.list[i].title;
+                    id[i] = arr.data.list[i].id;
+                    var n = document.createElement('div');
+                    myanswer_contents.appendChild(n);
+                    n.className = 'my_answer';
+                    n.innerHTML = '<div class="person">' +
+                        '<div class="my_avatar"><img class="myhead" src="' + head_url[i] + '"></div>' +
+                        '<div class="my_info">' +
+                        '<div class="myinfo_name"><p>' + nick_name[i] + '</p></div>' +
+                        '<div class="myinfo_time"><p>' + gettime(create_time[i]) + '</p></div></div>' +
+                        '<div class="myinfo_college"><P>' + tag[i] + '</P></div></div>' +
+                        '<div class="questionMiddle">' +
+                        '<div class="mycontent"><p>' + titlee[i] + '</p></div>' +
+                        '<div class="real_content"><p>' + content[i] + '</p></div>' +
+                        '<div class="myanswerImg"><img src="' + action + pic_thumb[i] + '"></div></div>' +
+                        '<div class="bottom">' +
+                        '<div class="comment"><div class="commentIcon"></div>' +
+                        '<p class="mycommentNum">' + reply_count[i] + '</p></div></div>'
+
+                    if (pic_thumb[i] == 2336) {
+                        var g3 = document.querySelectorAll(".myanswerImg");
+                        g3[i].style.display = 'none';
+                    }
+                    var my_answer = document.querySelectorAll(".my_answer");
+                    var d = document.createElement('div');
+                    my_answer[i].appendChild(d);
+                    d.style.display = 'none';
+                    d.innerHTML = id[i];
+                }
+                toqdetails(newquestion);
+            } else {
+                alert('没有更多数据咯~')
+            }
+        }
+    }
+    xhr.send();
+}
+
 myq.onclick = function() {
-    myquestion_contents.style.display = 'block';
-    myanswer_contents.style.display = 'none';
+    allmyq.style.display = 'block';
+    allmya.style.display = 'none';
     myq.style.backgroundImage = 'url(' + picPath + 'imgs/Chosebg.png)';
     myanswer.style.backgroundImage = 'url(' + picPath + 'imgs/noChosebg.png)';
     myanswer.style.color = 'black';
     myq.style.color = 'white';
-
+    myqpage = 1;
     myquestionshow();
 }
 
 myanswer.onclick = function() {
-    myquestion_contents.style.display = 'none';
-    myanswer_contents.style.display = 'block';
+    myapage = 1;
+    allmyq.style.display = 'none';
+    allmya.style.display = 'block';
     myanswer.style.backgroundImage = 'url(' + picPath + 'imgs/Chosebg.png)';
     myq.style.backgroundImage = 'url(' + picPath + 'imgs/noChosebg.png)';
     myq.style.color = 'black';
@@ -470,11 +759,15 @@ myanswer.onclick = function() {
         if (xhr.readyState == 4 && xhr.status == 200) {
             arr = JSON.parse(xhr.responseText);
             var size = arr.data.size;
+            if (size < 10) {
+                console.log(size);
+                myaloadmore.style.display = 'none';
+            }
             for (var i = 0; i < size; i++) {
-                if (arr.data.list[i].pic_name == 'undefined') {
-                    pic_name[i] = 2336;
+                if (arr.data.list[i].pic_thumb == 'undefined') {
+                    pic_thumb[i] = 2336;
                 } else {
-                    pic_name[i] = arr.data.list[i].pic_name;
+                    pic_thumb[i] = arr.data.list[i].pic_thumb;
                 }
                 nick_name[i] = arr.data.list[i].nick_name;
                 if (arr.data.list[i].tag == "undefined") {
@@ -503,12 +796,12 @@ myanswer.onclick = function() {
                     '<div class="questionMiddle">' +
                     '<div class="mycontent"><p>' + titlee[i] + '</p></div>' +
                     '<div class="real_content"><p>' + content[i] + '</p></div>' +
-                    '<div class="myanswerImg"><img src="' + action + pic_name[i] + '"></div></div>' +
+                    '<div class="myanswerImg"><img src="' + action + pic_thumb[i] + '"></div></div>' +
                     '<div class="bottom">' +
                     '<div class="comment"><div class="commentIcon"></div>' +
                     '<p class="mycommentNum">' + reply_count[i] + '</p></div></div>'
 
-                if (pic_name[i] == 2336) {
+                if (pic_thumb[i] == 2336) {
                     var g3 = document.querySelectorAll(".myanswerImg");
                     g3[i].style.display = 'none';
                 }
@@ -566,10 +859,10 @@ function replyshow() {
             arr = JSON.parse(xhr.responseText);
             var size = arr.data.reply_count;
             for (var i = 0; i < size; i++) {
-                if (arr.data.repliesList[i].pic_name == 'undefined') {
-                    pic_name[i] = 2337;
+                if (arr.data.repliesList[i].pic_thumb == 'undefined') {
+                    pic_thumb[i] = 2337;
                 } else {
-                    pic_name[i] = arr.data.repliesList[i].pic_name;
+                    pic_thumb[i] = arr.data.repliesList[i].pic_thumb;
                 }
                 if (arr.data.repliesList[i].tag == "undefined") {
                     tag[i] = '';
@@ -589,19 +882,19 @@ function replyshow() {
                     '<div class="reply_content">' +
                     '<div class="reply_top">' +
                     '<p class="reply_name">' + nick_name[i] + '</p>' +
-                    '<img class="xueba" src="' + picPath +'imgs/xueba.png">' +
+                    '<img class="xueba" src="' + picPath + 'imgs/xueba.png">' +
                     '<div class="took" ><div class="notake"></div></div>' +
                     '</div><div class="replyWords">' +
                     '<p>' + content[i] + '</p></div>' +
                     '<div class="reply_Img">' +
-                    '<img class="qdetails_imgs  imgtoreply" src="' + action + pic_name[i] + '"></div>' +
+                    '<img class="qdetails_imgs  imgtoreply" src="' + action + pic_thumb[i] + '"></div>' +
                     '<div class="reply_bottom">' +
                     '<p class="datetime">' + gettime(create_time[i]) + '</p>' +
                     '<div class="reply_likeit like">' +
                     '<div class="likeIcon"></div>' +
                     '<p class="likeNum">' + like_count[i] + '</p></div></div></div>'
 
-                if (pic_name[i] == 2337) {
+                if (pic_thumb[i] == 2337) {
                     var r = document.querySelectorAll(".imgtoreply"); //更换类名
                     r[i].style.display = 'none';
                 }
@@ -731,7 +1024,7 @@ headpage.onclick = function() {
 }
 
 sPage.onclick = function() {
-    searchcontents.innerHTML='';
+    searchcontents.innerHTML = '';
     headpage.style.backgroundImage = "url(" + picPath + "imgs/headPage.png)";
     qPage.style.backgroundImage = "url(" + picPath + "imgs/qPage.png)";
     sPage.style.backgroundImage = "url(" + picPath + "imgs/onsPage.png)";
@@ -760,10 +1053,10 @@ sPage.onclick = function() {
                 var size = arr.data.size;
                 searchshow.style.display = 'block';
                 for (var i = 0; i < size; i++) {
-                    if (arr.data.list[i].pic_name == 'undefined') {
-                        pic_name[i] = 2333;
+                    if (arr.data.list[i].pic_thumb == 'undefined') {
+                        pic_thumb[i] = 2333;
                     } else {
-                        pic_name[i] = arr.data.list[i].pic_name;
+                        pic_thumb[i] = arr.data.list[i].pic_thumb;
                     }
                     nick_name[i] = arr.data.list[i].nick_name;
                     if (arr.data.list[i].tag == "undefined") {
@@ -793,12 +1086,12 @@ sPage.onclick = function() {
                         '<div class="questionMiddle">' +
                         '<div class="content"><p>' + titlee[i] + '</p></div>' +
                         '<div class="real_content"><p>' + content[i] + '</p></div>' +
-                        '<div class="squestionImg"><img src="' + action + pic_name[i] + '"></div></div>' +
+                        '<div class="squestionImg"><img src="' + action + pic_thumb[i] + '"></div></div>' +
                         '<div class="bottom">' +
                         '<div class="comment"><div class="commentIcon"></div>' +
                         '<p class="commentNum">' + reply_count[i] + '</p></div></div>'
 
-                    if (pic_name[i] == 2333) {
+                    if (pic_thumb[i] == 2333) {
                         var g8 = document.querySelectorAll(".squestionImg");
 
                         g8[i].style.display = 'none';

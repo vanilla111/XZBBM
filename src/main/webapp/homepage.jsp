@@ -2,6 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%
     String basePath = "http://wx.yyeke.com/XZBBM/";
+    //String basePath = "http://bbm.redleaf.wang/";
 %>
 <html>
 
@@ -13,7 +14,7 @@
 </head>
 
 <body>
-    <main >
+    <main>
         <div class="contianer" id="main">
             <!-- 导航栏 -->
             <div class="nav">
@@ -35,9 +36,15 @@
                     </div>
                 </div>
                 <div class="question_contents">
-                    <div class="newquestions">
+                    <div class="allnew">
+                        <div class="newquestions">
+                        </div>
+                        <div class="nloadmore loadmore"></div>
                     </div>
-                    <div class="hotquestions">
+                    <div class="allhot">
+                        <div class="hotquestions">
+                        </div>
+                        <div class="hloadmore loadmore"></div>
                     </div>
                 </div>
             </div>
@@ -58,17 +65,17 @@
                             <img class="qdetails_imgs qdetails_img" src="">
                         </div>
                         <div class="qdetails_title"></div>
-                        <div class="qdetails_contents"><p></p></div>
+                        <div class="qdetails_contents">
+                            <p>这里是问题问题问题问题问题问题问题问题问题问题问题问题</p>
+                        </div>
                         <div class="qdetails_bottom">
-                            <div class="qdetails_avatar">
-                                <img class="qdetailshead" src=""/>
-                            </div>
+                            <div class="qdetails_avatar"><img class="qdetailshead" src=""></div>
                             <div class="info">
                                 <div class="qdetails_name">
-                                    <p></p>
+                                    <p>一只秋田猪</p>
                                 </div>
                                 <div class="qdetails_college">
-                                    <p></p>
+                                    <p>计算机</p>
                                 </div>
                             </div>
                             <img class="replyImg" src="<%=basePath%>imgs/reply.png">
@@ -78,28 +85,27 @@
                 <div class="replys">
                     <div class="reply">
                         <div class="replyContents">
-                            
                         </div>
                         <div class="replyContents">
                             <div class="reply_avatar"></div>
                             <div class="reply_content">
                                 <div class="reply_top">
-                                    <p class="reply_name"></p>
+                                    <p class="reply_name">重邮小学生</p>
                                     <img class="took" src="<%=basePath%>imgs/took.png">
                                 </div>
                                 <div class="replyWords">
-                                    <p></p>
+                                    <p>我说这样做，你就跟我这样做</p>
                                 </div>
                                 <div class="reply_Img">
                                     <img class="qdetails_imgs" src="">
                                 </div>
                                 <div class="reply_bottom">
-                                    <p class="datetime"></p>
-                                    <p class="hourtime"></p>
-                                    <p class="reply_college"></p>
+                                    <p class="datetime">2017-12-07</p>
+                                    <p class="hourtime">20:35</p>
+                                    <p class="reply_college">计算机学院</p>
                                     <div class="reply_likeit like">
                                         <div class="likeIcon"></div>
-                                        <p class="likeNum"></p>
+                                        <p class="likeNum">20</p>
                                     </div>
                                 </div>
                             </div>
@@ -110,8 +116,8 @@
                 <div class="biggerimgs">
                     <div class="mask"></div>
                     <div class="biggerimgbox">
-                    <img class="biggerimg" src="<%=basePath%>imgs/touming.gif" style="background-image: url();">
-                </div>
+                        <img class="biggerimg" src="<%=basePath%>imgs/touming.gif" style="background-image: url();">
+                    </div>
                 </div>
                 <!-- 回答问题页面 -->
                 <div class="answerquestion">
@@ -123,11 +129,11 @@
                             <textarea name="answerContent" id="answerContent"></textarea>
                         </div>
                         <div class="upphotos">
-                                <div class="upphoto">
-                                    <input id="upphotoload" type="file" accept="image/*">
-                                </div>
+                            <div class="upphoto">
+                                <input id="upphotoload" type="file" accept="image/*">
+                            </div>
                             <div class="upphotobox imgbox">
-                                <img class="deleteimg"  src="<%=basePath%>imgs/closed.png">
+                                <img class="deleteimg" src="<%=basePath%>imgs/closed.png">
                                 <img class="photoshow">
                             </div>
                         </div>
@@ -162,8 +168,14 @@
                         </div>
                     </div>
                     <div class="mycontents">
+                        <div class="allmyq">
                         <div class="myquestion_contents"></div>
+                        <div class="myqloadmore loadmore"></div>
+                        </div>
+                        <div class="allmya">
                         <div class="myanswer_contents"></div>
+                        <div  class="myaloadmore loadmore"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -177,10 +189,10 @@
                         <textarea name="qwords" id="qwords" placeholder="  请输入题目介绍（不得超过100字）"></textarea>
                     </div>
                     <div class="uploadBtn">
-                            <input id="upload" type="file" accept="image/*">
+                        <input id="upload" type="file" accept="image/*">
                     </div>
                     <div class="imageshowbox imgbox">
-                        <img class="qdeleteimg"  src="<%=basePath%>imgs/closed.png">
+                        <img class="qdeleteimg" src="<%=basePath%>imgs/closed.png">
                         <img class="imageshow">
                     </div>
                     <div class="allcolleges">
@@ -245,53 +257,53 @@
     <script type="text/javascript" src="<%=basePath%>javascript/cat.touchjs.js"></script>
     <script type="text/javascript" src="<%=basePath%>javascript/jquery-1.10.2.min.js"></script>
     <script type="text/javascript">
-        $(function () {
-            var $targetObj = $('.biggerimgbox');
-            //初始化设置
-            cat.touchjs.init($targetObj, function (left, top, scale, rotate) {
-                $('#left').text(left);
-                $('#top').text(top);
-                $('#scale').text(scale);
-                $('#rotate').text(rotate);
-                $targetObj.css({
-                    left: left,
-                    top: top,
-                    'transform': 'scale(' + scale + ') rotate(' + rotate + 'deg)',
-                    '-webkit-transform': 'scale(' + scale + ') rotate(' + rotate + 'deg)'
-                });
-            });
-            //初始化缩放手势（不需要就注释掉）
-            cat.touchjs.scale($targetObj, function (scale) {
-                $('#scale').text(scale);
+    $(function() {
+        var $targetObj = $('.biggerimgbox');
+        //初始化设置
+        cat.touchjs.init($targetObj, function(left, top, scale, rotate) {
+            $('#left').text(left);
+            $('#top').text(top);
+            $('#scale').text(scale);
+            $('#rotate').text(rotate);
+            $targetObj.css({
+                left: left,
+                top: top,
+                'transform': 'scale(' + scale + ') rotate(' + rotate + 'deg)',
+                '-webkit-transform': 'scale(' + scale + ') rotate(' + rotate + 'deg)'
             });
         });
-        //保存并刷新
-        function save() {
-            var data = {
-                left: cat.touchjs.left,
-                top: cat.touchjs.top,
-                scale: cat.touchjs.scaleVal,
-                rotate: cat.touchjs.rotateVal
-            };
-            //本地存储
-            window.localStorage.cat_touchjs_data = JSON.stringify(data);
-            window.location = window.location;
+        //初始化缩放手势（不需要就注释掉）
+        cat.touchjs.scale($targetObj, function(scale) {
+            $('#scale').text(scale);
+        });
+    });
+    //保存并刷新
+    function save() {
+        var data = {
+            left: cat.touchjs.left,
+            top: cat.touchjs.top,
+            scale: cat.touchjs.scaleVal,
+            rotate: cat.touchjs.rotateVal
         };
-        //重置
-        function reset() {
-            var data = {
-                left: 0,
-                top: 0,
-                scale: 1,
-                rotate: 0
-            };
-            //本地存储
-            window.localStorage.cat_touchjs_data = JSON.stringify(data);
+        //本地存储
+        window.localStorage.cat_touchjs_data = JSON.stringify(data);
+        window.location = window.location;
+    };
+    //重置
+    function reset() {
+        var data = {
+            left: 0,
+            top: 0,
+            scale: 1,
+            rotate: 0
         };
-        document.querySelector('.mask').onclick = function() {
-            document.querySelector('.biggerimgs').style.display = 'none';
-            reset();
-        }
+        //本地存储
+        window.localStorage.cat_touchjs_data = JSON.stringify(data);
+    };
+    document.querySelector('.mask').onclick = function() {
+        document.querySelector('.biggerimgs').style.display = 'none';
+        reset();
+    }
     </script>
 </body>
 
