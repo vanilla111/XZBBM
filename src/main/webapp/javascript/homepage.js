@@ -64,14 +64,14 @@ var allnew = document.querySelector('.allnew');
 var allhot = document.querySelector('.allhot');
 var allmyq = document.querySelector('.allmyq');
 var allmya = document.querySelector('.allmya');
-var nloadmore= document.querySelector('.nloadmore');
-var hloadmore= document.querySelector('.hloadmore');
-var myqloadmore= document.querySelector('.myqloadmore');
-var myaloadmore= document.querySelector('.myaloadmore');
+var nloadmore = document.querySelector('.nloadmore');
+var hloadmore = document.querySelector('.hloadmore');
+var myqloadmore = document.querySelector('.myqloadmore');
+var myaloadmore = document.querySelector('.myaloadmore');
 
 var dataUrl, collegetag, college_tag = 233,
     arr, newquestion, idnum,
-    targetid, dataurl, like, likeNum, qformdata, aformdata, orgPic, thumbPic, action = picPath + 'uploadfile/';
+    targetid, dataurl, like, likeNum, qformdata, aformdata, orgPic, qthumbPic, athumbPic, action = picPath + 'uploadfile/';
 var nick_name = [];
 var tag = new Array();
 var pic_thumb = new Array();
@@ -103,16 +103,27 @@ answerquestion.style.height = h + 'px';
 
 function input_nav(e) {
     e.onfocus = function() {
-        document.querySelector('.question_Page_contents').style.zIndex = '6';
+        search_Page.style.zIndex = '6';
     }
 
     e.onblur = function() {
-        document.querySelector('.question_Page_contents').style.zIndex = '6';
+        search_Page.style.zIndex = '4';
     }
 }
 
-input_nav(qtitle);
-input_nav(qwords);
+function inputNav(e) {
+    e.onfocus = function() {
+        question_Page.style.zIndex = '6';
+    }
+
+    e.onblur = function() {
+        question_Page.style.zIndex = '4';
+    }
+}
+
+input_nav(searchBox);
+inputNav(qwords);
+inputNav(qtitle);
 
 document.querySelector('.sendit').onclick = function() {
     var title = document.querySelector('#qtitle').value;
@@ -130,12 +141,15 @@ document.querySelector('.sendit').onclick = function() {
                     console.log('Got a POST request');
                     headpageshow();
                     questionshow(basePath + 'index');
+                    document.querySelector('#qtitle').value = '';
+                    document.querySelector('#qwords').value = '';
+                    qdelete();
                 }
             }
 
             xhr.send(q);
         }
-        upload('title=' + title + '&content=' + content + '&orgPic=' + orgPic + '&thumbPic=' + thumbPic + '&tag=' + collegetag);
+        upload('title=' + title + '&content=' + content + '&orgPic=' + orgPic + '&thumbPic=' + qthumbPic + '&tag=' + collegetag);
     }
 }
 
@@ -155,13 +169,15 @@ document.querySelector('.sendanswer').onclick = function() {
                     console.log('Got a POST request');
                     answerquestion.style.display = "none";
                     replyshow();
+                    document.querySelector('#answerContent').value = '';
+                    adelete();
                 }
             }
 
             xhr.send(q);
         }
         console.log('Got answer');
-        upload('id=' + answerid + '&type=answer' + '&content=' + content + '&orgPic=' + orgPic + '&thumbPic=' + thumbPic);
+        upload('id=' + answerid + '&type=answer' + '&content=' + content + '&orgPic=' + orgPic + '&thumbPic=' + athumbPic);
 
     }
 }
@@ -179,11 +195,15 @@ upload.onchange = function() {
             console.log('Got a POST request');
             arr = JSON.parse(xhr.responseText);
             console.log(arr);
-            thumbPic = arr.data[0][1];
-            orgPic = arr.data[0][0];
-            imageshow.src = action + thumbPic;
-            imageshowbox.style.display = 'block';
-            qdeleteimg.style.display = "block";
+            if (arr.status == 0) {
+                qthumbPic = arr.data[0][1];
+                orgPic = arr.data[0][0];
+                imageshow.src = action + qthumbPic;
+                imageshowbox.style.display = 'block';
+                qdeleteimg.style.display = "block";
+            } else {
+                alert(arr.msg)
+            }
         }
     }
     xhr.send(formData);
@@ -201,30 +221,41 @@ upphotoload.onchange = function() {
             console.log('Got a POST request');
             arr = JSON.parse(xhr.responseText);
             console.log(arr);
-            thumbPic = arr.data[0][1];
-            orgPic = arr.data[0][0];
-            photoshow.src = action + thumbPic;
-            upphotobox.style.display = 'block';
-            deleteimg.style.display = "block";
-            upphoto.style.backgroundImage = "url(" + picPath + "imgs/camera.png)";
+            if (arr.status == 0) {
+                athumbPic = arr.data[0][1];
+                orgPic = arr.data[0][0];
+                photoshow.src = action + athumbPic;
+                upphotobox.style.display = 'block';
+                deleteimg.style.display = "block";
+                upphoto.style.backgroundImage = "url(" + picPath + "imgs/camera.png)";
+            } else {
+                alert(arr.msg)
+            }
         }
     }
     xhr.send(formData);
 }
 
-
-qdeleteimg.onclick = function() {
+function qdelete() {
     imageshowbox.style.display = 'none';
     qdeleteimg.style.display = "none";
     imageshow.src = '';
     uploadBtn.style.backgroundImage = "url(" + picPath + "imgs/camera.png)";
 }
 
-deleteimg.onclick = function() {
+qdeleteimg.onclick = function() {
+    qdelete();
+}
+
+function adelete() {
     upphotobox.style.display = 'none';
     qdeleteimg.style.display = "none";
     photoshow.src = '';
     upphoto.style.backgroundImage = "url(" + picPath + "imgs/camera.png)";
+}
+
+deleteimg.onclick = function() {
+    adelete();
 }
 
 
@@ -603,14 +634,14 @@ function hotquestionshow() {
 myqloadmore.onclick = function() {
     myqpage = myqpage + 1
     var xhr = new XMLHttpRequest();
-    xhr.open("GET", basePath + 'mybbm?type=question&page='+myqpage, true);
+    xhr.open("GET", basePath + 'mybbm?type=question&page=' + myqpage, true);
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4 && xhr.status == 200) {
             arr = JSON.parse(xhr.responseText);
             var size = arr.data.size;
             if (arr.data.pages >= myqpage) {
-            for (var i = 0; i < size; i++) {
-                
+                for (var i = 0; i < size; i++) {
+
                     if (arr.data.list[i].pic_thumb == 'undefined') {
                         pic_thumb[i] = 2334;
                     } else {
@@ -669,14 +700,14 @@ myqloadmore.onclick = function() {
 myaloadmore.onclick = function() {
     myapage = myapage + 1
     var xhr = new XMLHttpRequest();
-    xhr.open("GET", basePath + 'mybbm?type=answer&page='+myapage, true);
+    xhr.open("GET", basePath + 'mybbm?type=answer&page=' + myapage, true);
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4 && xhr.status == 200) {
             arr = JSON.parse(xhr.responseText);
             var size = arr.data.size;
             if (arr.data.pages >= myapage) {
-            for (var i = 0; i < size; i++) {
-                
+                for (var i = 0; i < size; i++) {
+
                     if (arr.data.list[i].pic_thumb == 'undefined') {
                         pic_thumb[i] = 2336;
                     } else {
@@ -836,6 +867,7 @@ function toqdetails(arr) {
                 if (q_src == action + '2333' || q_src == action + '2334' || q_src == action + '2335' || q_src == action + '2336') {
                     qdetails_img.style.display = 'none'
                 } else {
+                    qdetails_img.style.display = 'block'
                     qdetails_img.src = q_src;
                 }
                 replyshow();

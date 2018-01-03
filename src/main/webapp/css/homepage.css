@@ -105,11 +105,13 @@ main {
 .myPage {
     background-size: contain;
     background-repeat: no-repeat;
+    -webkit-tap-highlight-color:rgba(255,0,0,0);
+
 }
 
 .question_contents {
     margin-top: 8.3vh;
-    margin-bottom: 20vw;
+    margin-bottom: 5vw;
 }
 
 .newquestion,
@@ -501,6 +503,7 @@ main {
 
 .my_page,
 .question_Page {
+    position: relative;
     width: 100vw;
     background-color: #f7f7f7;
     display: none;
@@ -617,7 +620,7 @@ main {
 }
 
 #qwords {
-    height: 56vw;
+    height: 50vw;
     resize: none;
 }
 
@@ -749,7 +752,7 @@ main {
     line-height: 11vw;
     background-color: #ffd510;
     color: white;
-    margin-top: 8vw;
+    margin-top: 7vw;
 }
 
 .sendit:active {
@@ -783,11 +786,12 @@ main {
 }
 
 #searchBox {
-    height: 8vw;
+    height: 100%;
     border: none;
     outline: none;
     font-size: 3.6vw;
     background-color: #f7f7f7;
+    width: 87%;
 }
 
 #searchBox::-webkit-input-placeholder {
@@ -922,10 +926,10 @@ main {
     background-image: url(../imgs/camera.png);
     background-repeat: no-repeat;
     background-size: contain;
-    top: 51vw;
+    top: 42vw;
     width: 28vw;
     height: 20vw;
-    left: 8vw;
+    left: 4vw;
 }
 
 #upload,
@@ -938,10 +942,10 @@ main {
 
 .imageshowbox {
     position: absolute;
-    top: 48vw;
+    top: 44vw;
     width: 28vw;
     height: 20vw;
-    left: 8vw;
+    left: 4vw;
     display: none;
 }
 
@@ -991,10 +995,19 @@ main {
     background: url(../imgs/loadmore.png) no-repeat;
     background-size: contain;
     height: 5vw;
-    margin: 0 4.3% 2vh;
+    margin: 0 4.3% 0;
+    padding-bottom: 9vh;
 }
 
 .myqloadmore,.myaloadmore{
     margin-top: 3vw;
 }
 
+.question_Page_contents{
+    z-index: 6;
+    position: relative;
+}
+
+.search_Page{
+    position: relative;
+}
