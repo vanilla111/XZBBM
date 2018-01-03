@@ -34,8 +34,8 @@ public class UploadServlet extends HttpServlet {
     private static int MEMORY_THRESHOLD = Integer.valueOf(PropertiesUtil.getProperty("MEMORY_THRESHOLD", "10240"));
 
     // 单位 bytes
-    private static int MAX_FILE_SIZE = Integer.valueOf(PropertiesUtil.getProperty("MAX_FILE_SIZE", "4194304"));
-    private static int MAX_REQUEST_SIZE = Integer.valueOf(PropertiesUtil.getProperty("MAX_REQUEST_SIZE", "5242880"));
+    private static int MAX_FILE_SIZE = Integer.valueOf(PropertiesUtil.getProperty("MAX_FILE_SIZE", "10485760"));
+    private static int MAX_REQUEST_SIZE = Integer.valueOf(PropertiesUtil.getProperty("MAX_REQUEST_SIZE", "11534336"));
     // 从 tomcat/bin 目录出发
     private static String UPLOAD_PATH = PropertiesUtil.getProperty("UPLOAD_PATH", "/root/uploadfile");
 
@@ -93,9 +93,12 @@ public class UploadServlet extends HttpServlet {
                         if (fc.size() > 1048576 && fc.size() <= 2621440) {
                             // 1M - 2.5M
                             Thumbnails.of(storeFile).scale(0.5f).outputQuality(0.5f).outputFormat(suffix).toFile(thumbFile);
-                        } else if (fc.size() > 2621440) {
-                            // > 2.5M
+                        } else if (fc.size() > 2621440 && fc.size() <= 5242880) {
+                            // 2.5M - 5M
                             Thumbnails.of(storeFile).scale(0.5f).outputQuality(0.25f).outputFormat(suffix).toFile(thumbFile);
+                        } else if (fc.size() > 5242880) {
+                            // > 5M
+                            Thumbnails.of(storeFile).scale(0.5f).outputQuality(0.1f).outputFormat(suffix).toFile(thumbFile);
                         } else {
                             // <= 1M
                             Thumbnails.of(storeFile).scale(0.5f).outputQuality(0.75f).outputFormat(suffix).toFile(thumbFile);
@@ -110,10 +113,10 @@ public class UploadServlet extends HttpServlet {
             ServerResponse res = ServerResponse.createBySuccess("文件上传成功", fileNameList);
             writer.print(new ObjectMapper().writeValueAsString(res));
         } catch (FileUploadBase.FileSizeLimitExceededException e) {
-            ServerResponse res = ServerResponse.createByErrorMessage("文件大小超过限制(4M)");
+            ServerResponse res = ServerResponse.createByErrorMessage("文件大小超过限制(10M)");
             writer.print(new ObjectMapper().writeValueAsString(res));
         } catch (FileUploadBase.SizeLimitExceededException e) {
-            ServerResponse res = ServerResponse.createByErrorMessage("上传文件总大小超过限制(5M)");
+            ServerResponse res = ServerResponse.createByErrorMessage("上传文件总大小超过限制(11M)");
             writer.print(new ObjectMapper().writeValueAsString(res));
         } catch (FileTypeNotSupportException e) {
             ServerResponse res = ServerResponse.createByErrorMessage("文件类型仅支持 JPEG(JPG),PNG,GIF,BMP,TIFF");
