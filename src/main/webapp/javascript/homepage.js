@@ -94,12 +94,14 @@ var h = document.documentElement.clientHeight;
 
 var flags = false;
 
-console.log(h);
+
 main.style.height = h + 'px';
 question_Page.style.height = h + 'px';
 answerquestion.style.height = h + 'px';
 
-
+document.querySelector('.loginbtn').onclick = function() {
+    document.querySelector('.loginpage').style.display='none';
+}
 
 function input_nav(e) {
     e.onfocus = function() {
@@ -1065,8 +1067,10 @@ sPage.onclick = function() {
     question_Page.style.display = "none";
     search_Page.style.display = "block";
     my_page.style.display = "none";
+    
 
     document.querySelector("#searchBox").onsearch = function() {
+        document.querySelector("#searchBox").blur();
         var key = document.querySelector("#searchBox").value;
         console.log(key);
         console.log(college_tag);

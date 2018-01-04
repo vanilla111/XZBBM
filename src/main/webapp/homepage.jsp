@@ -16,6 +16,11 @@
 <body>
     <main>
         <div class="contianer" id="main">
+            <div class="loginpage">
+                <div class="log"></div>
+                <img class="logwords" src="<%=basePath%>imgs/logwords.png">
+                <div class="loginbtn"></div>
+            </div>
             <!-- 导航栏 -->
             <div class="nav">
                 <div class="list">
@@ -169,12 +174,12 @@
                     </div>
                     <div class="mycontents">
                         <div class="allmyq">
-                        <div class="myquestion_contents"></div>
-                        <div class="myqloadmore loadmore"></div>
+                            <div class="myquestion_contents"></div>
+                            <div class="myqloadmore loadmore"></div>
                         </div>
                         <div class="allmya">
-                        <div class="myanswer_contents"></div>
-                        <div  class="myaloadmore loadmore"></div>
+                            <div class="myanswer_contents"></div>
+                            <div class="myaloadmore loadmore"></div>
                         </div>
                     </div>
                 </div>
@@ -183,10 +188,10 @@
             <div class="question_Page">
                 <div class="question_Page_contents">
                     <div class="qtitle">
-                        <input type="text" name="qtitle" id="qtitle" placeholder="  输入标题">
+                        <input type="text" name="qtitle" id="qtitle" placeholder="输入标题">
                     </div>
                     <div class="qwords">
-                        <textarea name="qwords" id="qwords" placeholder="  请输入题目介绍（不得超过100字）"></textarea>
+                        <textarea name="qwords" id="qwords" placeholder="请输入题目介绍（不得超过100字）"></textarea>
                     </div>
                     <div class="uploadBtn">
                         <input id="upload" type="file" accept="image/*">
@@ -196,20 +201,20 @@
                         <img class="imageshow">
                     </div>
                     <div class="allcolleges">
-                        <div class="choseCollege">经管</div>
-                        <div class="choseCollege">传媒</div>
-                        <div class="choseCollege">安法</div>
-                        <div class="choseCollege">理学院</div>
-                        <div class="choseCollege">生物</div>
-                        <div class="choseCollege">光电</div>
+                        <div class="choseCollege">通信</div>
+                        <div class="choseCollege">计算机</div>
                         <div class="choseCollege">自动化</div>
                         <div class="choseCollege">先进</div>
-                        <div class="choseCollege">国际</div>
-                        <div class="choseCollege">计算机</div>
-                        <div class="choseCollege">通信</div>
+                        <div class="choseCollege">光电</div>
                         <div class="choseCollege">软件</div>
-                        <div class="choseCollege">体育</div>
+                        <div class="choseCollege">生物</div>
+                        <div class="choseCollege">理学院</div>
+                        <div class="choseCollege">经管</div>
+                        <div class="choseCollege">传媒</div>
                         <div class="choseCollege">外国语</div>
+                        <div class="choseCollege">国际</div>
+                        <div class="choseCollege">安法</div>
+                        <div class="choseCollege">体育</div>
                         <div class="emmm"></div>
                         <div class="emmm"></div>
                     </div>
@@ -225,30 +230,30 @@
                     </div>
                     <p class="collegeName">学院:</p>
                     <div class="allcolleges">
-                        <div class="searchCollege">经管</div>
-                        <div class="searchCollege">传媒</div>
-                        <div class="searchCollege">安法</div>
-                        <div class="searchCollege">理学院</div>
-                        <div class="searchCollege">生物</div>
-                        <div class="searchCollege">光电</div>
+                        <div class="searchCollege">通信</div>
+                        <div class="searchCollege">计算机</div>
                         <div class="searchCollege">自动化</div>
                         <div class="searchCollege">先进</div>
-                        <div class="searchCollege">国际</div>
-                        <div class="searchCollege">计算机</div>
-                        <div class="searchCollege">通信</div>
+                        <div class="searchCollege">光电</div>
                         <div class="searchCollege">软件</div>
-                        <div class="searchCollege">体育</div>
+                        <div class="searchCollege">生物</div>
+                        <div class="searchCollege">理学院</div>
+                        <div class="searchCollege">经管</div>
+                        <div class="searchCollege">传媒</div>
                         <div class="searchCollege">外国语</div>
+                        <div class="searchCollege">国际</div>
+                        <div class="searchCollege">安法</div>
+                        <div class="searchCollege">体育</div>
                         <div class="emmm"></div>
                         <div class="emmm"></div>
                     </div>
                 </div>
-                <div class="searchshow">
-                    <div class="answerquestion_top">
-                        <img class="backtosearch" src="<%=basePath%>imgs/back.png">
-                    </div>
-                    <div class="searchcontents"></div>
+            </div>
+            <div class="searchshow">
+                <div class="answerquestion_top">
+                    <img class="backtosearch" src="<%=basePath%>imgs/back.png">
                 </div>
+                <div class="searchcontents"></div>
             </div>
         </div>
     </main>

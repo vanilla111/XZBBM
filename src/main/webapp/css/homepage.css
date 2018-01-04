@@ -22,6 +22,43 @@ main {
     /*display: none;*/
 }
 
+
+.loginpage{
+    position: fixed;
+    z-index: 999;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background: url(../imgs/bgimg.png) no-repeat;
+    background-size: cover;
+}
+
+.log{
+    margin: 0 auto;
+    margin-top: 10vh;
+    width: 92vw;
+    height: 75vw;
+    background: url(../imgs/log.png) no-repeat;
+    background-size: contain;
+}
+
+.logwords{
+   margin: 0 auto;
+    width: 65vw;
+    display: block;
+    margin-top: 3vh;
+}
+
+.loginbtn{
+    margin: 0 auto;
+    margin-top: 6vh;
+    width: 72vw;
+    height: 15vw;
+    background: url(../imgs/login.png) no-repeat;
+    background-size: contain;
+    -webkit-tap-highlight-color:rgba(255,0,0,0);
+}
+
 .questions {
     width: 100%;
     position: fixed;
@@ -267,6 +304,7 @@ main {
     background-color: white;
     height: 100vh;
     z-index: 999;
+    -webkit-overflow-scrolling: touch;
 }
 
 .question_qdetails {
@@ -405,6 +443,7 @@ main {
     width: 4vw;
     margin-bottom: -1vw;
     display: none;
+    margin-left: 2vw;
 }
 
 .take {
@@ -570,6 +609,7 @@ main {
     margin: 30vh 3vw 0 3vw;
     height: 60vh;
     width: 93.5%;
+    -webkit-overflow-scrolling: touch;
 }
 
 .contentop {
@@ -626,14 +666,14 @@ main {
 
 #qwords,
 .qtitle input,
-.inputbox,
 #answerContent {
     border: solid 1px #ebebeb;
     border-radius: 10px;
-    width: 100%;
+    width: 93%;
     font-size: 4vw;
     outline: none;
     color: #b8b8b8;
+    padding: 0 3vw;
 }
 
 #qwords::-webkit-input-placeholder {
@@ -753,6 +793,7 @@ main {
     background-color: #ffd510;
     color: white;
     margin-top: 7vw;
+    -webkit-tap-highlight-color:rgba(255,0,0,0);
 }
 
 .sendit:active {
@@ -775,14 +816,20 @@ main {
     width: 4vw;
     margin-left: 4vw;
     float: left;
-    margin-top: 3vw;
-    margin-right: 2vw;
+    margin-top: 2.8vw;
 }
 
 .inputbox {
     margin-top: 6vw;
     background-color: #f7f7f7;
     line-height: 10vw;
+    border: solid 1px #ebebeb;
+    border-radius: 10px;
+    width: 100%;
+    font-size: 4vw;
+    outline: none;
+    color: #b8b8b8;
+    overflow: hidden;
 }
 
 #searchBox {
@@ -791,7 +838,8 @@ main {
     outline: none;
     font-size: 3.6vw;
     background-color: #f7f7f7;
-    width: 87%;
+    width: 90%;
+    float: right;
 }
 
 #searchBox::-webkit-input-placeholder {
@@ -853,6 +901,7 @@ main {
     width: 100%;
     background-color: #f7f7f7;
     overflow: hidden;
+    -webkit-overflow-scrolling: touch;
 }
 
 .answerquestion {
@@ -956,13 +1005,15 @@ main {
 }
 
 .searchshow {
-    position: absolute;
+    position: fixed;
     top: 0;
     width: 100%;
     height: 100%;
     background-color: #f7f7f7;
     z-index: 77;
     display: none;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
 }
 
 .real_content {
