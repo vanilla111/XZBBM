@@ -22,6 +22,9 @@ main {
     /*display: none;*/
 }
 
+.toheight{
+    padding-bottom: 8vh;
+}
 
 .loginpage{
     position: fixed;
@@ -69,23 +72,25 @@ main {
 .myq {
     background-image: url(../imgs/Chosebg.png);
     background-repeat: no-repeat;
-    background-size: 100%;
+    background-size: cover;
     width: 50%;
     display: inline-block;
     text-align: center;
     float: left;
     color: white;
+    -webkit-tap-highlight-color:rgba(255,0,0,0);
 }
 
 .hotq,
 .myanswer {
     background-image: url(../imgs/noChosebg.png);
     background-repeat: no-repeat;
-    background-size: 100%;
+    background-size: cover;
     width: 50%;
     display: inline-block;
     text-align: center;
     float: right;
+    -webkit-tap-highlight-color:rgba(255,0,0,0);
 }
 
 .newq p,
@@ -148,11 +153,12 @@ main {
 
 .question_contents {
     margin-top: 8.3vh;
-    margin-bottom: 5vw;
 }
 
 .newquestion,
+.addnewquestion,
 .hotquestion,
+.addhotquestion,
 .searchcontent {
     border-radius: 5px;
     background-color: white;
@@ -223,7 +229,7 @@ main {
 
 .info_name,
 .myinfo_name {
-    color: #868686;
+    color: #444444;
 }
 
 .info_time,
@@ -381,6 +387,7 @@ main {
 .qdetails_college {
     margin-top: 0.5vh;
     color: #79d0f4;
+    font-size: 3vw;
 }
 
 .qdetails_contents {
@@ -519,7 +526,7 @@ main {
 .biggerimgs {
     width: 100%;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.7);
     position: fixed;
     display: none;
     top: 0;
@@ -631,6 +638,8 @@ main {
 }
 
 .myquestion,
+.addmyquestion,
+.addmy_answer,
 .my_answer {
     background-color: white;
     padding: 3.5vw 0;
@@ -1027,7 +1036,7 @@ main {
     width: 100%;
 }
 
-.biggerimgbox {
+/*.biggerimgbox {
     width: 90vw;
     height: 110vw;
     margin: auto;
@@ -1036,6 +1045,11 @@ main {
     left: 0;
     bottom: 0;
     right: 0;
+}*/
+
+.biggerimgbox {
+    margin: 0 auto;
+    position: absolute;
 }
 
 .qdetailshead {
@@ -1046,12 +1060,15 @@ main {
     background: url(../imgs/loadmore.png) no-repeat;
     background-size: contain;
     height: 5vw;
+}
+
+.nloadmore,.hloadmore{
     margin: 0 4.3% 0;
-    padding-bottom: 9vh;
+    padding-bottom: 1vh;
 }
 
 .myqloadmore,.myaloadmore{
-    margin-top: 3vw;
+    margin:3vw 0;
 }
 
 .question_Page_contents{

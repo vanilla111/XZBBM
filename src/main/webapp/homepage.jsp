@@ -7,7 +7,7 @@
 <html>
 
 <head>
-    <title>学霸帮帮忙</title>
+    <title>homepage</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
     <link rel="stylesheet" type="text/css" href="<%=basePath%>css/homepage.css">
@@ -52,6 +52,7 @@
                         <div class="hloadmore loadmore"></div>
                     </div>
                 </div>
+                <div class="toheight"></div>
             </div>
             <!-- 问题详情 -->
             <div class="qdetails">
@@ -121,7 +122,8 @@
                 <div class="biggerimgs">
                     <div class="mask"></div>
                     <div class="biggerimgbox">
-                        <img class="biggerimg" src="<%=basePath%>imgs/touming.gif" style="background-image: url();">
+                        <!-- <img class="biggerimg" src="<%=basePath%>imgs/touming.gif" style="background-image: url();"> -->
+                        <img class="biggerimg" src=" ">
                     </div>
                 </div>
                 <!-- 回答问题页面 -->
@@ -263,7 +265,7 @@
     <script type="text/javascript" src="<%=basePath%>javascript/jquery-1.10.2.min.js"></script>
     <script type="text/javascript">
     $(function() {
-        var $targetObj = $('.biggerimgbox');
+        var $targetObj = $('.biggerimg');
         //初始化设置
         cat.touchjs.init($targetObj, function(left, top, scale, rotate) {
             $('#left').text(left);
