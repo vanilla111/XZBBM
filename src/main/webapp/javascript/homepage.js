@@ -243,6 +243,7 @@ upphotoload.onchange = function() {
 }
 
 function qdelete() {
+    qthumpic = undefined;
     imageshowbox.style.display = 'none';
     qdeleteimg.style.display = "none";
     upload.files[0] ='';
@@ -254,6 +255,7 @@ qdeleteimg.onclick = function() {
 }
 
 function adelete() {
+    athumbpic = undefined;
     upphotobox.style.display = 'none';
     qdeleteimg.style.display = "none";
     upphotoload.files[0] = '';
@@ -290,7 +292,7 @@ function gettime(t) {
 }
 
 nloadmore.onclick = function() {
-    npage = npage + 1;
+    npage += 1;
     var xhr = new XMLHttpRequest();
     xhr.open("GET", basePath + 'index?page=' + npage, true);
     xhr.onreadystatechange = function() {
@@ -347,6 +349,7 @@ nloadmore.onclick = function() {
                 }
                 toqdetails(addnewquestion);
             } else {
+                if (npage > 0) npage--;
                 alert('没有更多数据咯~')
             }
         }
@@ -412,6 +415,7 @@ hloadmore.onclick = function() {
                 }
                 toqdetails(addhotquestion);
             } else {
+                if (hpage > 0) hpage--;
                 alert('没有更多数据咯~')
             }
         }
@@ -695,6 +699,7 @@ myqloadmore.onclick = function() {
                 }
                 toqdetails(addmyquestion);
             } else {
+                if (myqpage > 0) myqpage--;
                 alert('没有更多数据咯~')
             }
         }
@@ -763,6 +768,7 @@ myaloadmore.onclick = function() {
                 }
                 toqdetails(addmy_answer);
             } else {
+                if (myapage > 0) myapage--;
                 alert('没有更多数据咯~')
             }
         }
