@@ -626,6 +626,8 @@ main {
     border-bottom: none;
     border-radius: 10px 10px 0 0;
     overflow: hidden;
+    position: fixed;
+    width: 93.5%;
 }
 
 .myquestion_contents,
@@ -774,13 +776,13 @@ main {
 
 .choseCollege,
 .searchCollege {
-    height: 9vw;
-    width: 19vw;
+    height: 8.5vw;
+    width: 18.5vw;
     border-radius: 30px;
     text-align: center;
     color: #b8b8b8;
-    line-height: 9vw;
-    font-size: 4vw;
+    line-height: 8.5vw;
+    font-size: 3.5vw;
 }
 
 .choseCollege {
@@ -801,8 +803,10 @@ main {
     line-height: 11vw;
     background-color: #ffd510;
     color: white;
-    margin-top: 7vw;
-    -webkit-tap-highlight-color:rgba(255,0,0,0);
+    margin-top: 6vw;
+    -webkit-tap-highlight-color: rgba(255,0,0,0);
+    position: relative;
+    z-index: 33;
 }
 
 .sendit:active {
@@ -972,6 +976,7 @@ main {
     position: absolute;
     bottom: 0;
     width: 91.6vw;
+    z-index: 22;
 }
 
 .answerquestion_bottom img {
@@ -1060,6 +1065,12 @@ main {
     background: url(../imgs/loadmore.png) no-repeat;
     background-size: contain;
     height: 5vw;
+    -webkit-tap-highlight-color: rgba(255,0,0,0);
+}
+
+.my_page{
+    position: fixed;
+    height: 100%;
 }
 
 .nloadmore,.hloadmore{

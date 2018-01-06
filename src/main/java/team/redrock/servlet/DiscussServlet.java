@@ -1,5 +1,7 @@
 package team.redrock.servlet;
 
+import org.apache.sling.xss.XSSAPI;
+import org.apache.sling.xss.impl.XSSAPIImpl;
 import org.codehaus.jackson.map.ObjectMapper;
 import team.redrock.bean.Discuss;
 import team.redrock.bean.Student;
@@ -27,8 +29,9 @@ public class DiscussServlet extends HttpServlet {
         try (PrintWriter writer = response.getWriter()){
             if ("question".equals(requestType)) {
                 // 提问
-                String title = request.getParameter("title");
-                String content = request.getParameter("content");
+                XSSAPI xssapi = new XSSAPIImpl();
+                String title = xssapi.encodeForHTMLAttr(request.getParameter("title"));
+                String content = xssapi.encodeForHTMLAttr(request.getParameter("content"));
                 String picName = request.getParameter("orgPic");
                 String thumbPicName = request.getParameter("thumbPic");
                 String tag = request.getParameter("tag");
@@ -46,8 +49,9 @@ public class DiscussServlet extends HttpServlet {
             } else if ("answer".equals(requestType)) {
                 // 回答
                 try {
+                    XSSAPI xssapi = new XSSAPIImpl();
                     int pid = Integer.valueOf(request.getParameter("id"));
-                    String content = request.getParameter("content");
+                    String content = xssapi.encodeForHTMLAttr(request.getParameter("content"));
                     String picName = request.getParameter("orgPic");
                     String thumbPicName = request.getParameter("thumbPic");
                     Discuss discuss = new Discuss();

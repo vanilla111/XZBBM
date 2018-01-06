@@ -302,7 +302,7 @@ nloadmore.onclick = function() {
             if (arr.data.pages >= npage) {
                 for (var i = 0; i < size; i++) {
                     if (arr.data.list[i].pic_thumb == 'undefined') {
-                        pic_thumb[i] = 111;
+                        pic_thumb[i] = 2335;
                     } else {
                         pic_thumb[i] = arr.data.list[i].pic_thumb;
                     }
@@ -337,7 +337,7 @@ nloadmore.onclick = function() {
                         '<div class="comment"><div class="commentIcon"></div>' +
                         '<p class="commentNum">' + reply_count[i] + '</p></div></div>'
 
-                    if (pic_thumb[i] == 111) {
+                    if (pic_thumb[i] == 2335) {
                         var gg = document.querySelectorAll(".addquestionImg");
                         gg[i].style.display = 'none';
                     }
