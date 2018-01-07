@@ -63,7 +63,7 @@
         <include refid="Base_Column_List"/>
         FROM discuss
         WHERE pid = #{pid, jdbcType=INTEGER} AND status = 1
-        ORDER BY id DESC
+        ORDER BY is_accepted DESC, is_scholar DESC, like_count DESC, id DESC
     </select>
     
     <select id="selectDiscussesByAuthorId" parameterType="java.lang.String" resultMap="DiscussResult">

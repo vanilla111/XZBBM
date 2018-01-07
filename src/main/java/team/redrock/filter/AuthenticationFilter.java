@@ -72,7 +72,7 @@ public class AuthenticationFilter implements Filter {
                 stu = juniorDB.queryJuniorByOpenid(openid);
                 if (stu == null) { // 查询小帮手绑定接口，获取用户信息
                     JSONObject stuInfo = WXUtil.doGetStr(openIdToStuInfoURL + openid);
-                    if (stuInfo.getInt("status") == 200) {
+                    if (stuInfo.getInt("status") != 200) {
                         //再次查询 判断是否是学霸第一次登陆
                         //如果学霸第一次登陆,应该更新senior中对应的openid
                         stu = new Student();
