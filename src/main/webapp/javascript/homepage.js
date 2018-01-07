@@ -133,8 +133,7 @@ document.querySelector('.sendit').onclick = function() {
   
     if (content.length>100||title == '') {
         alert('标题不能为空且内容不能超过一百字')
-    }
-    else {
+    } else {
         function upload(q) {
             var xhr = new XMLHttpRequest();
             var url = basePath + 'discuss?type=question';
@@ -142,17 +141,18 @@ document.querySelector('.sendit').onclick = function() {
             xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             xhr.onreadystatechange = function() {
                 if (xhr.readyState == 4 && xhr.status == 200) {
+                    arr = JSON.parse(xhr.responseText);
                     if (arr.status == 0) {
-                    console.log('Got a POST request');
-                    headpageshow();
-                    questionshow(basePath + 'index');
-                    document.querySelector('#qtitle').value = '';
-                    document.querySelector('#qwords').value = '';
-                    qdelete();
-                    qthumbPic='undefined';
-                }else{
-                    alert(arr.msg)
-                }
+                        console.log('Got a POST request');
+                        headpageshow();
+                        questionshow(basePath + 'index');
+                        document.querySelector('#qtitle').value = '';
+                        document.querySelector('#qwords').value = '';
+                        qdelete();
+                        qthumbPic='undefined';
+                    } else {
+                        alert(arr.msg);
+                    }
                 }
             }
 
@@ -175,16 +175,17 @@ document.querySelector('.sendanswer').onclick = function() {
             xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             xhr.onreadystatechange = function() {
                 if (xhr.readyState == 4 && xhr.status == 200) {
+                    arr = JSON.parse(xhr.responseText);
                     if (arr.status == 0) {
-                    console.log('Got a POST request');
-                    answerquestion.style.display = "none";
-                    replyshow();
-                    document.querySelector('#answerContent').value = '';
-                    adelete();
-                    athumbPic='undefined';
-                }else{
-                    alert(arr.msg)
-                }
+                        console.log('Got a POST request');
+                        answerquestion.style.display = "none";
+                        replyshow();
+                        document.querySelector('#answerContent').value = '';
+                        adelete();
+                        athumbPic='undefined';
+                    } else {
+                        alert(arr.msg)
+                    }
 
                 }
             }
@@ -217,7 +218,8 @@ upload.onchange = function() {
                 imageshowbox.style.display = 'block';
                 qdeleteimg.style.display = "block";
             } else {
-                alert(arr.msg)
+                alert(arr.msg);
+                qdeleteimg.style.display = "block";
             }
         }
     }

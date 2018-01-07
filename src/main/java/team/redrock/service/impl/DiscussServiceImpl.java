@@ -71,7 +71,7 @@ public class DiscussServiceImpl implements IDiscussService {
 
     public ServerResponse<PageInfo> getMyDiscusses(String authorId, String discussType, Integer pageNum, Integer pageSize) {
         if (authorId == null) {
-            return ServerResponse.createByErrorMessage("用户信息为空，请求失败");
+            return ServerResponse.createByErrorMessage("当前用户暂未持有学号");
         }
         try (SqlSession sqlSession = SqlSessionFactoryUtil.getSqlSessionFactory().openSession()) {
             PageHelper.startPage(pageNum, pageSize);
@@ -99,7 +99,7 @@ public class DiscussServiceImpl implements IDiscussService {
 
     public ServerResponse acceptReply(int replyId, String authorId, boolean accept) {
         if (authorId == null)
-            return ServerResponse.createByErrorMessage("用户信息为空，请求失败");
+            return ServerResponse.createByErrorMessage("学号为空，请求失败");
 
         try (SqlSession sqlSession = SqlSessionFactoryUtil.getSqlSessionFactory().openSession()) {
             DiscussMapper discussMapper = sqlSession.getMapper(DiscussMapper.class);
@@ -123,7 +123,7 @@ public class DiscussServiceImpl implements IDiscussService {
 
     public ServerResponse likeReply(int replyId, String openid, boolean like) {
         if (openid == null)
-            return ServerResponse.createByErrorMessage("用户信息为空，请求失败");
+            return ServerResponse.createByErrorMessage("openid为空，请求失败");
 
         try (SqlSession sqlSession = SqlSessionFactoryUtil.getSqlSessionFactory().openSession()) {
             UpvoteMapper upvoteMapper = sqlSession.getMapper(UpvoteMapper.class);

@@ -318,15 +318,13 @@
         reset();
     }
     </script>
-    <script src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js
-
-    "></script>
+    <script src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
     <script src="https://wx.idsbllp.cn/wx-api/share.js"></script>
     <script>
             WXSHARE.config({debug: false});
             WXSHARE.ready(function() {
                 var option = {
-                      title: "学霸帮帮忙|重邮两百名学霸在此！从此，期末复习So Easy！",
+                      title: "学霸帮帮忙 | 重邮200名学霸在此！从此，期末复习So Easy！",
                       link: "http://wx.yyeke.com/XZBBM/bbm/page",
                       desc: '亲，快来参加学霸帮帮忙——网络志愿服务活动吧！',
                       type: '',
