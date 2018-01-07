@@ -104,9 +104,14 @@ public class AuthenticationFilter implements Filter {
                             sqlSession.commit();
                         }
                     } else {
-                        // 获取失败跳转到绑定页面
-                        response.sendRedirect(openIdBindStuURL.replaceFirst("\\{openid\\}", openid) + PropertiesUtil.getProperty("bbmIndex"));
-                        return ;
+                        // 获取失败设定为游客
+                        //response.sendRedirect(openIdBindStuURL.replaceFirst("\\{openid\\}", openid) + PropertiesUtil.getProperty("bbmIndex"));
+                        stu = new Student();
+                        stu.setGender(sex);
+                        stu.setOpenId(openid);
+                        stu.setNick_name(nickname);
+                        stu.setHead_url(headimgurl);
+                        stu.setJurisdiction(Jurisdiction.YOUKE);
                     }
                 } else if (!nickname.equals(stu.getNick_name())
                         || !headimgurl.equals(stu.getHead_url())) {

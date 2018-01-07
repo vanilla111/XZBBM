@@ -47,7 +47,7 @@ public class DiscussServiceImpl implements IDiscussService {
         }
     }
 
-    public ServerResponse<DiscussVo> queryRepliesByPid(int pid, String authorId) {
+    public ServerResponse<DiscussVo> queryRepliesByPid(int pid, String openid) {
         try (SqlSession sqlSession = SqlSessionFactoryUtil.getSqlSessionFactory().openSession()) {
             DiscussMapper discussMapper = sqlSession.getMapper(DiscussMapper.class);
             UpvoteMapper upvoteMapper = sqlSession.getMapper(UpvoteMapper.class);
@@ -56,13 +56,13 @@ public class DiscussServiceImpl implements IDiscussService {
                 return ServerResponse.createByErrorMessage("id 对应讨论不存在");
             List<Discuss> replies = discussMapper.selectRepliesByPid(pid);
             if (replies.size() > 0) {
-                List<Upvote> upvotes = upvoteMapper.selectByDList(authorId, replies);
+                List<Upvote> upvotes = upvoteMapper.selectByDList(openid, replies);
                 //TODO 程序规模较大时，务必更改点赞功能的实现
-                setUpvoteStatus(replies, upvotes, authorId);
+                setUpvoteStatus(replies, upvotes);
             }
 
             DiscussVo discussVo = new DiscussVo(discuss);
-            if (authorId != null && authorId.equals(discuss.getAuthor_id()))
+            if (openid != null && openid.equals(discuss.getAuthor_id()))
                 discussVo.setMine(true);
             discussVo.setRepliesList(replies);
             return ServerResponse.createBySuccess(discussVo);
@@ -121,8 +121,8 @@ public class DiscussServiceImpl implements IDiscussService {
         }
     }
 
-    public ServerResponse likeReply(int replyId, String authorId, boolean like) {
-        if (authorId == null)
+    public ServerResponse likeReply(int replyId, String openid, boolean like) {
+        if (openid == null)
             return ServerResponse.createByErrorMessage("用户信息为空，请求失败");
 
         try (SqlSession sqlSession = SqlSessionFactoryUtil.getSqlSessionFactory().openSession()) {
@@ -130,7 +130,7 @@ public class DiscussServiceImpl implements IDiscussService {
             DiscussMapper discussMapper = sqlSession.getMapper(DiscussMapper.class);
             Upvote upvote = new Upvote();
             upvote.setDid(replyId);
-            upvote.setAid(authorId);
+            upvote.setAid(openid);
             Upvote selectUpvote = upvoteMapper.selectUpvoteByDidAiD(upvote);
             int res = 0;
             if (like) {
@@ -167,12 +167,12 @@ public class DiscussServiceImpl implements IDiscussService {
         }
     }
 
-    private void setUpvoteStatus(List<Discuss> discussList, List<Upvote> upvoteList, String authorId) {
+    private void setUpvoteStatus(List<Discuss> discussList, List<Upvote> upvoteList) {
         for (int i = 0; i < discussList.size(); i++) {
             Discuss discuss = discussList.get(i);
             for (int j = 0; j < upvoteList.size(); j++) {
                 Upvote upvote = upvoteList.get(j);
-                if (discuss.getId() == upvote.getDid() && upvote.getAid().equals(authorId))
+                if (discuss.getId() == upvote.getDid())
                     discuss.setUpvote(true);
             }
         }

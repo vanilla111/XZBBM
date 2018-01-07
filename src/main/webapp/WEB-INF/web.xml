@@ -5,6 +5,6 @@
 <web-app>
     <error-page>
         <error-code>404</error-code>
-        <location>http://wx.yyeke.com/XZBBM/bbm/page</location>
+        <location>/notfound.jsp</location>
     </error-page>
 </web-app>

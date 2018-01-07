@@ -30,6 +30,7 @@ public class DiscussOpServlet extends HttpServlet {
         try (PrintWriter writer = response.getWriter()) {
             try {
                 int discussId = Integer.valueOf(request.getParameter("id"));
+                String openId = student.getOpenId();
                 String authorId = student.getStu_id();
                 IDiscussService service = new DiscussServiceImpl();
                 ServerResponse serverResponse;
@@ -41,10 +42,10 @@ public class DiscussOpServlet extends HttpServlet {
                     serverResponse = service.acceptReply(discussId, authorId, false);
                 } else if ("like".equals(requestType)) {
                     // 点赞
-                    serverResponse = service.likeReply(discussId, authorId, true);
+                    serverResponse = service.likeReply(discussId, openId, true);
                 } else if ("unlike".equals(requestType)) {
                     // 取消点赞
-                    serverResponse = service.likeReply(discussId, authorId, false);
+                    serverResponse = service.likeReply(discussId, openId, false);
                 } else {
                     serverResponse = ServerResponse.createByErrorMessage("不支持的操作");
                 }

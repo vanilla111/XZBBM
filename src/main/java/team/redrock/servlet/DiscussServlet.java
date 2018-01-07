@@ -89,7 +89,7 @@ public class DiscussServlet extends HttpServlet {
             try {
                 int pid = Integer.valueOf(request.getParameter("id"));
                 IDiscussService service = new DiscussServiceImpl();
-                ServerResponse serverResponse = service.queryRepliesByPid(pid, student.getStu_id());
+                ServerResponse serverResponse = service.queryRepliesByPid(pid, student.getOpenId());
                 writer.print(new ObjectMapper().writeValueAsString(serverResponse));
             } catch (NumberFormatException e) {
                 ServerResponse serverResponse = ServerResponse.createByErrorMessage("pid 参数错误（整型）");

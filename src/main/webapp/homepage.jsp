@@ -17,9 +17,16 @@
     <main>
         <div class="contianer" id="main">
             <div class="loginpage">
+                <div class="toplog">
+                    <img class="tuanlog" src="<%=basePath%>imgs/tuanlog.png">
+                    <img class="schoollog" src="<%=basePath%>imgs/schoollog.png">
+                </div>
                 <div class="log"></div>
                 <img class="logwords" src="<%=basePath%>imgs/logwords.png">
                 <div class="loginbtn"></div>
+                <div class="bottomlog">
+                <img  src="<%=basePath%>imgs/bottomlog.png">
+            </div>
             </div>
             <!-- 导航栏 -->
             <div class="nav">
@@ -122,7 +129,6 @@
                 <div class="biggerimgs">
                     <div class="mask"></div>
                     <div class="biggerimgbox">
-                        <!-- <img class="biggerimg" src="<%=basePath%>imgs/touming.gif" style="background-image: url();"> -->
                         <img class="biggerimg" src=" ">
                     </div>
                 </div>
@@ -312,6 +318,35 @@
         reset();
     }
     </script>
+    <script src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js
+
+    "></script>
+    <script src="https://wx.idsbllp.cn/wx-api/share.js"></script>
+    <script>
+            WXSHARE.config({debug: false});
+            WXSHARE.ready(function() {
+                var option = {
+                      title: "学霸帮帮忙|重邮两百名学霸在此！从此，期末复习So Easy！",
+                      link: "http://wx.yyeke.com/XZBBM/bbm/page",
+                      desc: '亲，快来参加学霸帮帮忙——网络志愿服务活动吧！',
+                      type: '',
+                      success: function() {
+                          console.log('分享成功');
+                      },
+                      cancel: function() {
+                          console.log('取消分享');
+                      },
+                  };
+
+                  wx.onMenuShareTimeline(option);
+                  wx.onMenuShareAppMessage(option);
+                  wx.onMenuShareQQ(option);
+                  wx.onMenuShareWeibo(option);
+                  wx.onMenuShareQZone(option);
+            });
+
+        </script>
+
 </body>
 
 </html>

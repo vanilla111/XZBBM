@@ -142,6 +142,7 @@ document.querySelector('.sendit').onclick = function() {
             xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             xhr.onreadystatechange = function() {
                 if (xhr.readyState == 4 && xhr.status == 200) {
+                    if (arr.status == 0) {
                     console.log('Got a POST request');
                     headpageshow();
                     questionshow(basePath + 'index');
@@ -149,6 +150,9 @@ document.querySelector('.sendit').onclick = function() {
                     document.querySelector('#qwords').value = '';
                     qdelete();
                     qthumbPic='undefined';
+                }else{
+                    alert(arr.msg)
+                }
                 }
             }
 
@@ -171,12 +175,17 @@ document.querySelector('.sendanswer').onclick = function() {
             xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             xhr.onreadystatechange = function() {
                 if (xhr.readyState == 4 && xhr.status == 200) {
+                    if (arr.status == 0) {
                     console.log('Got a POST request');
                     answerquestion.style.display = "none";
                     replyshow();
                     document.querySelector('#answerContent').value = '';
                     adelete();
                     athumbPic='undefined';
+                }else{
+                    alert(arr.msg)
+                }
+
                 }
             }
 
