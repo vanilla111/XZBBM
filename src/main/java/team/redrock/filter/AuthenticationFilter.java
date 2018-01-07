@@ -40,15 +40,16 @@ public class AuthenticationFilter implements Filter {
 //        Student student = new Student();
 //        student.setStu_id("2015211516");
 //        student.setNick_name("admin");
+//        student.setOpenId("zxcvbnm,");
 //        student.setHead_url("www.baidu.com");
-//        student.setIdentity(Jurisdiction.SUPERSCHOLAR.getType());
+//        student.setJurisdiction(Jurisdiction.SUPERSCHOLAR);
 //        request.getSession().setAttribute("user", student);
 
         // 判断session中是否有该用户
         Student stu = (Student) request.getSession().getAttribute("user");
         if (stu == null) {
             // 如果没有则获取openid
-            // 判断请求中是否有 code
+            // 判断请求中是否有 oauthStatus
             String oauthStatus = request.getParameter("oauthstatus");
             if ( oauthStatus == null || "".equals(oauthStatus) || !"success".equals(oauthStatus)) {
                 //如果没有code 跳转 snsapi_userinfo
@@ -57,12 +58,6 @@ public class AuthenticationFilter implements Filter {
                 return ;
             }
 
-//            // 用 code 换取 openId access_token
-//            userInfo = WXUtil.getWebUserInfo(code);
-//            if (userInfo == null) {
-//                response.sendRedirect(notFoundUrl);
-//                return ;
-//            }
             String openid = request.getParameter("openid");
             String nickname = request.getParameter("nickname");
             String sex = request.getParameter("sex");
