@@ -47,7 +47,7 @@ public class DiscussServiceImpl implements IDiscussService {
         }
     }
 
-    public ServerResponse<DiscussVo> queryRepliesByPid(int pid, String openid) {
+    public ServerResponse<DiscussVo> queryRepliesByPid(int pid, String openid, String authorId) {
         try (SqlSession sqlSession = SqlSessionFactoryUtil.getSqlSessionFactory().openSession()) {
             DiscussMapper discussMapper = sqlSession.getMapper(DiscussMapper.class);
             UpvoteMapper upvoteMapper = sqlSession.getMapper(UpvoteMapper.class);
@@ -62,7 +62,7 @@ public class DiscussServiceImpl implements IDiscussService {
             }
 
             DiscussVo discussVo = new DiscussVo(discuss);
-            if (openid != null && openid.equals(discuss.getAuthor_id()))
+            if (authorId != null && authorId.equals(discuss.getAuthor_id()))
                 discussVo.setMine(true);
             discussVo.setRepliesList(replies);
             return ServerResponse.createBySuccess(discussVo);

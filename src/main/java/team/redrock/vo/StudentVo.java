@@ -16,6 +16,8 @@ public class StudentVo {
     private String nick_name;
     private boolean scholar;
 
+    private String message;
+
     public StudentVo(Student stu) {
         this.id = stu.getId();
         this.name = stu.getName();
@@ -29,6 +31,8 @@ public class StudentVo {
         this.nick_name = stu.getNick_name();
         if (stu.getJurisdiction() == Jurisdiction.SUPERSCHOLAR)
             this.scholar = true;
+        if ("-1".equals(this.stu_id))
+            this.message = "服务器傲娇的拒绝了信息校对，现仅提供浏览功能(重新登入以尝试刷新个人信息)";
     }
 
     public int getId() {
@@ -117,5 +121,13 @@ public class StudentVo {
 
     public void setScholar(boolean scholar) {
         this.scholar = scholar;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

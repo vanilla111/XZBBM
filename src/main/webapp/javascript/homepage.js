@@ -70,7 +70,7 @@ var myqloadmore = document.querySelector('.myqloadmore');
 var myaloadmore = document.querySelector('.myaloadmore');
 
 var dataUrl, collegetag, college_tag = 233,
-    arr, newquestion, idnum,
+    arr, newquestion, idnum, userInfoFlag = 1,
     targetid, dataurl, like, likeNum, qformdata, aformdata, orgPic, qthumbPic, athumbPic, action = picPath + 'uploadfile/';
 var nick_name = [];
 var tag = new Array();
@@ -480,7 +480,7 @@ function questionshow(url) {
                     '<div class="questionImg"><img src="' + action + pic_thumb[i] + '"></div></div>' +
                     '<div class="bottom">' +
                     '<div class="comment"><div class="commentIcon"></div>' +
-                    '<p class="commentNum">' + reply_count[i] + '</p></div></div>'
+                    '<p class="commentNum">' + reply_count[i] + '</p></div></div>';
 
                 if (pic_thumb[i] == 2333) {
                     var g = document.querySelectorAll(".questionImg");
@@ -571,6 +571,9 @@ newq.onclick = function() {
     hotq.style.color = 'black';
     newq.style.color = 'white';
     npage = 1;
+    if (userInfoFlag > 0) {
+        infoshow();
+    }
     questionshow(basePath + 'index');
 }
 
@@ -1211,6 +1214,10 @@ function infoshow() {
             document.querySelector('.myId').innerHTML = username;
             var headimg = arr.data.head_url;
             document.querySelector('.myHead').src = headimg;
+            if (userInfoFlag > 1 && arr.data.stu_id == "-1") {
+                alert(arr.data.message);
+                userInfoFlag--;
+            }
         }
     }
     xhr.send();
