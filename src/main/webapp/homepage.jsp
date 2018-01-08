@@ -326,6 +326,7 @@
                 var option = {
                       title: "学霸帮帮忙 | 重邮200名学霸在此！从此，期末复习So Easy！",
                       link: "http://wx.yyeke.com/XZBBM/bbm/page",
+                      imgUrl: 'http://wx.yyeke.com/XZBBM/imgs/log.png',
                       desc: '亲，快来参加学霸帮帮忙——网络志愿服务活动吧！',
                       type: '',
                       success: function() {

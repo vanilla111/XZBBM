@@ -279,6 +279,10 @@ deleteimg.onclick = function() {
 
 
 window.onload = function() {
+    if (userInfoFlag > 0) {
+        infoshow();
+        userInfoFlag--;
+    }
     questionshow(basePath + 'index');
 };
 
@@ -571,9 +575,6 @@ newq.onclick = function() {
     hotq.style.color = 'black';
     newq.style.color = 'white';
     npage = 1;
-    if (userInfoFlag > 0) {
-        infoshow();
-    }
     questionshow(basePath + 'index');
 }
 
