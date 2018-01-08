@@ -96,10 +96,11 @@ public class AuthenticationFilter implements Filter {
                         if (tempStu != null && tempStu.getJurisdiction() == Jurisdiction.SUPERSCHOLAR) {
                             //第一次登陆 更新openid
                             stu.setId(tempStu.getId());
-                            stu.setJurisdiction(Jurisdiction.SUPERSCHOLAR);
+                            stu.setIdentity(Jurisdiction.SUPERSCHOLAR.getType());
                             seniorDB.updateWXInfoByPrimaryKey(stu);
                             sqlSession.commit();
                         } else {
+                            stu.setIdentity(Jurisdiction.DUMBASS.getType());
                             juniorDB.insertSelective(stu);
                             sqlSession.commit();
                         }
@@ -114,6 +115,7 @@ public class AuthenticationFilter implements Filter {
                     }
                 } else if (!nickname.equals(stu.getNick_name())
                         || !headimgurl.equals(stu.getHead_url())) {
+                    stu.setIdentity(Jurisdiction.DUMBASS.getType());
                     stu.setNick_name(nickname);
                     stu.setHead_url(headimgurl);
                     juniorDB.updateWXInfoByPrimaryKey(stu);
@@ -121,6 +123,7 @@ public class AuthenticationFilter implements Filter {
                 }
             } else if (!nickname.equals(stu.getNick_name())
                     || !headimgurl.equals(stu.getHead_url())) {
+                stu.setIdentity(Jurisdiction.SUPERSCHOLAR.getType());
                 stu.setNick_name(nickname);
                 stu.setHead_url(headimgurl);
                 seniorDB.updateWXInfoByPrimaryKey(stu);
