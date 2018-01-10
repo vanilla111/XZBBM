@@ -73,38 +73,44 @@ public class AuthenticationFilter implements Filter {
                 if (stu == null) { // 查询小帮手绑定接口，获取用户信息
                     JSONObject stuInfo = null;
                     stu = new Student();
-                    try {
-                        stuInfo = WXUtil.doGetStr(openIdToStuInfoURL + openid);
-                    } catch (IOException e) {
-                        stu.setStu_id("-1");
-                    }
-                    if (stuInfo != null && stuInfo.getInt("status") == 200) {
-                        //再次查询 判断是否是学霸第一次登陆
-                        //如果学霸第一次登陆,应该更新senior中对应的openid
-                        JSONObject stuData = stuInfo.getJSONObject("data");
-                        stu.setCollege(stuData.getString("collage"));
-                        stu.setClass_num(stuData.getString("class"));
-                        stu.setMajor(stuData.getString("major"));
-                        stu.setStu_id(stuData.getString("usernumber"));
-                        stu.setGender(stuData.getString("gender"));
-                        stu.setName(stuData.getString("realname"));
-                        stu.setGender(sex);
-                        stu.setOpenId(openid);
-                        stu.setNick_name(nickname);
-                        stu.setHead_url(headimgurl);
-                        SeniorStudent tempStu = seniorDB.querySeniorByAuthorId(stu.getStu_id());
-                        if (tempStu != null && tempStu.getJurisdiction() == Jurisdiction.SUPERSCHOLAR) {
-                            //第一次登陆 更新openid
-                            stu.setId(tempStu.getId());
-                            stu.setIdentity(Jurisdiction.SUPERSCHOLAR.getType());
-                            seniorDB.updateWXInfoByPrimaryKey(stu);
-                            sqlSession.commit();
-                        } else {
-                            stu.setIdentity(Jurisdiction.DUMBASS.getType());
-                            juniorDB.insertSelective(stu);
-                            sqlSession.commit();
+                    boolean flag = false;
+                    for (int i = 0; i < 3; i++) {
+                        try {
+                            stuInfo = WXUtil.doGetStr(openIdToStuInfoURL + openid);
+                        } catch (IOException e) {
+                            stu.setStu_id("-1");
                         }
-                    } else {
+                        if (stuInfo != null && stuInfo.getInt("status") == 200) {
+                            //再次查询 判断是否是学霸第一次登陆
+                            //如果学霸第一次登陆,应该更新senior中对应的openid
+                            JSONObject stuData = stuInfo.getJSONObject("data");
+                            stu.setCollege(stuData.getString("collage"));
+                            stu.setClass_num(stuData.getString("class"));
+                            stu.setMajor(stuData.getString("major"));
+                            stu.setStu_id(stuData.getString("usernumber"));
+                            stu.setGender(stuData.getString("gender"));
+                            stu.setName(stuData.getString("realname"));
+                            stu.setGender(sex);
+                            stu.setOpenId(openid);
+                            stu.setNick_name(nickname);
+                            stu.setHead_url(headimgurl);
+                            SeniorStudent tempStu = seniorDB.querySeniorByAuthorId(stu.getStu_id());
+                            if (tempStu != null && tempStu.getJurisdiction() == Jurisdiction.SUPERSCHOLAR) {
+                                //第一次登陆 更新openid
+                                stu.setId(tempStu.getId());
+                                stu.setIdentity(Jurisdiction.SUPERSCHOLAR.getType());
+                                seniorDB.updateWXInfoByPrimaryKey(stu);
+                                sqlSession.commit();
+                            } else {
+                                stu.setIdentity(Jurisdiction.DUMBASS.getType());
+                                juniorDB.insertSelective(stu);
+                                sqlSession.commit();
+                            }
+                            flag = true;
+                            break;
+                        }
+                    }
+                    if (!flag) {
                         // 获取失败设定为游客
                         //response.sendRedirect(openIdBindStuURL.replaceFirst("\\{openid\\}", openid) + PropertiesUtil.getProperty("bbmIndex"));
                         stu.setGender(sex);
@@ -123,7 +129,7 @@ public class AuthenticationFilter implements Filter {
                 }
             } else if (!nickname.equals(stu.getNick_name())
                     || !headimgurl.equals(stu.getHead_url())) {
-                stu.setIdentity(Jurisdiction.SUPERSCHOLAR.getType());
+                stu.setJurisdiction(Jurisdiction.SUPERSCHOLAR);
                 stu.setNick_name(nickname);
                 stu.setHead_url(headimgurl);
                 seniorDB.updateWXInfoByPrimaryKey(stu);

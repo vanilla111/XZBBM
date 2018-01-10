@@ -70,9 +70,10 @@ var myqloadmore = document.querySelector('.myqloadmore');
 var myaloadmore = document.querySelector('.myaloadmore');
 
 var dataUrl, collegetag, college_tag = 233,
-    arr, newquestion, idnum, userInfoFlag = 1,
+    arr, newquestion, idnum,
     targetid, dataurl, like, likeNum, qformdata, aformdata, orgPic, qthumbPic, athumbPic, action = picPath + 'uploadfile/';
 var nick_name = [];
+var slip;
 var tag = new Array();
 var pic_thumb = new Array();
 var reply_count = new Array();
@@ -100,7 +101,7 @@ question_Page.style.height = h + 'px';
 answerquestion.style.height = h + 'px';
 
 document.querySelector('.loginbtn').onclick = function() {
-    document.querySelector('.loginpage').style.display='none';
+    document.querySelector('.loginpage').style.display = 'none';
 }
 
 function input_nav(e) {
@@ -130,8 +131,8 @@ inputNav(qtitle);
 document.querySelector('.sendit').onclick = function() {
     var title = document.querySelector('#qtitle').value;
     var content = document.querySelector('#qwords').value;
-  
-    if (content.length>100||title == '') {
+
+    if (content.length > 100 || title == '') {
         alert('标题不能为空且内容不能超过一百字')
     } else {
         function upload(q) {
@@ -149,9 +150,9 @@ document.querySelector('.sendit').onclick = function() {
                         document.querySelector('#qtitle').value = '';
                         document.querySelector('#qwords').value = '';
                         qdelete();
-                        qthumbPic='undefined';
+                        qthumbPic = 'undefined';
                     } else {
-                        alert(arr.msg);
+                        alert(arr.msg)
                     }
                 }
             }
@@ -182,7 +183,7 @@ document.querySelector('.sendanswer').onclick = function() {
                         replyshow();
                         document.querySelector('#answerContent').value = '';
                         adelete();
-                        athumbPic='undefined';
+                        athumbPic = 'undefined';
                     } else {
                         alert(arr.msg)
                     }
@@ -218,8 +219,7 @@ upload.onchange = function() {
                 imageshowbox.style.display = 'block';
                 qdeleteimg.style.display = "block";
             } else {
-                alert(arr.msg);
-                qdeleteimg.style.display = "block";
+                alert(arr.msg)
             }
         }
     }
@@ -257,7 +257,7 @@ function qdelete() {
     qthumpic = undefined;
     imageshowbox.style.display = 'none';
     qdeleteimg.style.display = "none";
-    upload.files[0] ='';
+    upload.files[0] = '';
     uploadBtn.style.backgroundImage = "url(" + picPath + "imgs/camera.png)";
 }
 
@@ -279,10 +279,6 @@ deleteimg.onclick = function() {
 
 
 window.onload = function() {
-    if (userInfoFlag > 0) {
-        infoshow();
-        userInfoFlag--;
-    }
     questionshow(basePath + 'index');
 };
 
@@ -315,7 +311,7 @@ nloadmore.onclick = function() {
             arr = JSON.parse(xhr.responseText);
             var size = arr.data.size;
             if (arr.data.pages >= npage) {
-                for (var i = 0; i < size; i++) {
+                for (var i = 0, j = (10 * (npage - 1)); i < size, j < (10 * npage); i++, j++) {
                     if (arr.data.list[i].pic_thumb == 'undefined') {
                         pic_thumb[i] = 2335;
                     } else {
@@ -337,7 +333,7 @@ nloadmore.onclick = function() {
                     head_url[i] = arr.data.list[i].head_url;
                     var n = document.createElement('div');
                     newquestions.appendChild(n);
-                    n.className = 'addnewquestion';
+                    n.className = 'newquestion';
                     n.innerHTML = '<div class="person">' +
                         '<div class="avatar"><img class="myhead" src="' + head_url[i] + '"></div>' +
                         '<div class="info">' +
@@ -347,22 +343,22 @@ nloadmore.onclick = function() {
                         '<div class="questionMiddle">' +
                         '<div class="content"><p>' + titlee[i] + '</p></div>' +
                         '<div class="real_content"><p>' + content[i] + '</p></div>' +
-                        '<div class="questionImg addquestionImg"><img src="' + action + pic_thumb[i] + '"></div></div>' +
+                        '<div class="questionImg"><img src="' + action + pic_thumb[i] + '"></div></div>' +
                         '<div class="bottom">' +
                         '<div class="comment"><div class="commentIcon"></div>' +
                         '<p class="commentNum">' + reply_count[i] + '</p></div></div>'
 
                     if (pic_thumb[i] == 2335) {
-                        var gg = document.querySelectorAll(".addquestionImg");
-                        gg[i].style.display = 'none';
+                        var gg = document.querySelectorAll(".questionImg");
+                        gg[j].style.display = 'none';
                     }
-                    addnewquestion = document.querySelectorAll(".addnewquestion");
+                    newquestion = document.querySelectorAll(".newquestion");
                     var d = document.createElement('div');
-                    addnewquestion[i].appendChild(d);
+                    newquestion[j].appendChild(d);
                     d.style.display = 'none';
                     d.innerHTML = id[i];
                 }
-                toqdetails(addnewquestion);
+                toqdetails(newquestion);
             } else {
                 if (npage > 0) npage--;
                 alert('没有更多数据咯~')
@@ -381,7 +377,7 @@ hloadmore.onclick = function() {
             arr = JSON.parse(xhr.responseText);
             var size = arr.data.size;
             if (arr.data.pages >= hpage) {
-                for (var i = 0; i < size; i++) {
+                for (var i = 0, j = (10 * (hpage - 1)); i < size, j < (10 * hpage); i++, j++) {
                     if (arr.data.list[i].pic_thumb == 'undefined') {
                         pic_thumb[i] = 2335;
                     } else {
@@ -403,7 +399,7 @@ hloadmore.onclick = function() {
                     id[i] = arr.data.list[i].id;
                     var n = document.createElement('div');
                     hotquestions.appendChild(n);
-                    n.className = 'addhotquestion';
+                    n.className = 'hotquestion';
                     n.innerHTML = '<div class="person">' +
                         '<div class="avatar"><img class="myhead" src="' + head_url[i] + '"></div>' +
                         '<div class="info">' +
@@ -413,22 +409,22 @@ hloadmore.onclick = function() {
                         '<div class="questionMiddle">' +
                         '<div class="content"><p>' + titlee[i] + '</p></div>' +
                         '<div class="real_content"><p>' + content[i] + '</p></div>' +
-                        '<div class="hotquestionImg addhotquestionImg"><img src="' + action + pic_thumb[i] + '"></div></div>' +
+                        '<div class="hotquestionImg"><img src="' + action + pic_thumb[i] + '"></div></div>' +
                         '<div class="bottom">' +
                         '<div class="comment"><div class="commentIcon"></div>' +
                         '<p class="commentNum">' + reply_count[i] + '</p></div></div>'
 
                     if (pic_thumb[i] == 2335) {
-                        var g2 = document.querySelectorAll(".addhotquestionImg");
-                        g2[i].style.display = 'none';
+                        var g2 = document.querySelectorAll(".hotquestionImg");
+                        g2[j].style.display = 'none';
                     }
-                    var addhotquestion = document.querySelectorAll(".addhotquestion");
+                    var hotquestion = document.querySelectorAll(".hotquestion");
                     var d = document.createElement('div');
-                    addhotquestion[i].appendChild(d);
+                    hotquestion[j].appendChild(d);
                     d.style.display = 'none';
                     d.innerHTML = id[i];
                 }
-                toqdetails(addhotquestion);
+                toqdetails(hotquestion);
             } else {
                 if (hpage > 0) hpage--;
                 alert('没有更多数据咯~')
@@ -484,7 +480,7 @@ function questionshow(url) {
                     '<div class="questionImg"><img src="' + action + pic_thumb[i] + '"></div></div>' +
                     '<div class="bottom">' +
                     '<div class="comment"><div class="commentIcon"></div>' +
-                    '<p class="commentNum">' + reply_count[i] + '</p></div></div>';
+                    '<p class="commentNum">' + reply_count[i] + '</p></div></div>'
 
                 if (pic_thumb[i] == 2333) {
                     var g = document.querySelectorAll(".questionImg");
@@ -665,7 +661,7 @@ myqloadmore.onclick = function() {
             arr = JSON.parse(xhr.responseText);
             var size = arr.data.size;
             if (arr.data.pages >= myqpage) {
-                for (var i = 0; i < size; i++) {
+                for (var i = 0, j = (10 * (myqpage - 1)); i < size, j < (10 * myqpage); i++, j++) {
 
                     if (arr.data.list[i].pic_thumb == 'undefined') {
                         pic_thumb[i] = 2334;
@@ -688,7 +684,7 @@ myqloadmore.onclick = function() {
                     id[i] = arr.data.list[i].id;
                     var n = document.createElement('div');
                     myquestion_contents.appendChild(n);
-                    n.className = 'addmyquestion';
+                    n.className = 'myquestion';
                     n.innerHTML = '<div class="person">' +
                         '<div class="my_avatar"><img class="myhead" src="' + head_url[i] + '"></div>' +
                         '<div class="my_info">' +
@@ -698,21 +694,21 @@ myqloadmore.onclick = function() {
                         '<div class="questionMiddle">' +
                         '<div class="mycontent"><p>' + titlee[i] + '</p></div>' +
                         '<div class="real_content"><p>' + content[i] + '</p></div>' +
-                        '<div class="myquestionImg addmyquestionImg"><img src="' + action + pic_thumb[i] + '"></div></div>' +
+                        '<div class="myquestionImg"><img src="' + action + pic_thumb[i] + '"></div></div>' +
                         '<div class="bottom">' +
                         '<div class="comment"><div class="commentIcon"></div>' +
                         '<p class="mycommentNum">' + reply_count[i] + '</p></div></div>';
                     if (pic_thumb[i] == 2334) {
-                        var g1 = document.querySelectorAll(".addmyquestionImg");
-                        g1[i].style.display = 'none';
+                        var g1 = document.querySelectorAll(".myquestionImg");
+                        g1[j].style.display = 'none';
                     }
-                    var addmyquestion = document.querySelectorAll(".addmyquestion");
+                    var myquestion = document.querySelectorAll(".myquestion");
                     var d = document.createElement('div');
-                    addmyquestion[i].appendChild(d);
+                    myquestion[j].appendChild(d);
                     d.style.display = 'none';
                     d.innerHTML = id[i];
                 }
-                toqdetails(addmyquestion);
+                toqdetails(myquestion);
             } else {
                 if (myqpage > 0) myqpage--;
                 alert('没有更多数据咯~')
@@ -732,7 +728,7 @@ myaloadmore.onclick = function() {
             arr = JSON.parse(xhr.responseText);
             var size = arr.data.size;
             if (arr.data.pages >= myapage) {
-                for (var i = 0; i < size; i++) {
+                for (var i = 0, j = (10 * (myapage - 1)); i < size, j < (10 * myapage); i++, j++) {
 
                     if (arr.data.list[i].pic_thumb == 'undefined') {
                         pic_thumb[i] = 2336;
@@ -756,7 +752,7 @@ myaloadmore.onclick = function() {
                     id[i] = arr.data.list[i].id;
                     var n = document.createElement('div');
                     myanswer_contents.appendChild(n);
-                    n.className = 'addmy_answer';
+                    n.className = 'my_answer';
                     n.innerHTML = '<div class="person">' +
                         '<div class="my_avatar"><img class="myhead" src="' + head_url[i] + '"></div>' +
                         '<div class="my_info">' +
@@ -766,22 +762,22 @@ myaloadmore.onclick = function() {
                         '<div class="questionMiddle">' +
                         '<div class="mycontent"><p>' + titlee[i] + '</p></div>' +
                         '<div class="real_content"><p>' + content[i] + '</p></div>' +
-                        '<div class="myanswerImg addmyanswerImg"><img src="' + action + pic_thumb[i] + '"></div></div>' +
+                        '<div class="myanswerImg"><img src="' + action + pic_thumb[i] + '"></div></div>' +
                         '<div class="bottom">' +
                         '<div class="comment"><div class="commentIcon"></div>' +
                         '<p class="mycommentNum">' + reply_count[i] + '</p></div></div>'
 
                     if (pic_thumb[i] == 2336) {
-                        var g3 = document.querySelectorAll(".addmyanswerImg");
-                        g3[i].style.display = 'none';
+                        var g3 = document.querySelectorAll(".myanswerImg");
+                        g3[j].style.display = 'none';
                     }
-                    var addmy_answer = document.querySelectorAll(".addmy_answer");
+                    var my_answer = document.querySelectorAll(".my_answer");
                     var d = document.createElement('div');
-                    addmy_answer[i].appendChild(d);
+                    my_answer[j].appendChild(d);
                     d.style.display = 'none';
                     d.innerHTML = id[i];
                 }
-                toqdetails(addmy_answer);
+                toqdetails(my_answer);
             } else {
                 if (myapage > 0) myapage--;
                 alert('没有更多数据咯~')
@@ -880,6 +876,7 @@ myanswer.onclick = function() {
 function toqdetails(arr) {
     for (let i = 0; i < arr.length; i++) {
         arr[i].addEventListener("click", function(e) {
+            slip = window.scrollY;
             targetid = this.children[3].innerHTML;
             thisid.innerHTML = targetid;
             if (e.target.className != "likeitIcon" && e.target.className != "likeNum" && e.target.className != "likeIcon") {
@@ -898,7 +895,6 @@ function toqdetails(arr) {
                     qdetails_img.src = q_src;
                 }
                 replyshow();
-                //删除这段
                 var qdetails_imgs = document.querySelectorAll('.qdetails_imgs');
                 if (qdetails_imgs != 'undefined') {
                     imgtobig(qdetails_imgs);
@@ -1046,8 +1042,6 @@ function replyshow() {
 back.onclick = function() {
     qdetails.style.display = "none";
     nav.style.display = "block";
-    questionshow(basePath + 'index');
-    hotquestionshow();
 }
 
 function imgtobig(m) {
@@ -1055,13 +1049,13 @@ function imgtobig(m) {
         m[i].onclick = function() {
             console.log(m);
             // biggerimg.style.backgroundImage = "url(" + m[i].src + ")";
-            biggerimg.src=m[i].src;
-            var biggerimgbox =document.querySelector(".biggerimgbox");
-            biggerimgbox.style.width= '80vw';
-            biggerimgbox.style.height= ((0.8*w)/biggerimg.width)*biggerimg.height + 'px';
-            var imgh=((0.8*w)/biggerimg.width)*biggerimg.height;
-            biggerimgbox.style.top= (h-imgh)*0.5 +'px';
-            biggerimgbox.style.left= (w-(0.8*w))*0.5 +'px';
+            biggerimg.src = m[i].src;
+            var biggerimgbox = document.querySelector(".biggerimgbox");
+            biggerimgbox.style.width = '80vw';
+            biggerimgbox.style.height = ((0.8 * w) / biggerimg.width) * biggerimg.height + 'px';
+            var imgh = ((0.8 * w) / biggerimg.width) * biggerimg.height;
+            biggerimgbox.style.top = (h - imgh) * 0.5 + 'px';
+            biggerimgbox.style.left = (w - (0.8 * w)) * 0.5 + 'px';
             biggerimgs.style.display = 'block';
         }
     }
@@ -1099,7 +1093,7 @@ sPage.onclick = function() {
     question_Page.style.display = "none";
     search_Page.style.display = "block";
     my_page.style.display = "none";
-    
+
 
     document.querySelector("#searchBox").onsearch = function() {
         document.querySelector("#searchBox").blur();
@@ -1215,10 +1209,6 @@ function infoshow() {
             document.querySelector('.myId').innerHTML = username;
             var headimg = arr.data.head_url;
             document.querySelector('.myHead').src = headimg;
-            if (userInfoFlag > 1 && arr.data.stu_id == "-1") {
-                alert(arr.data.message);
-                userInfoFlag--;
-            }
         }
     }
     xhr.send();
