@@ -35,15 +35,15 @@ public class AuthenticationFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) resp;
         //测试代码
-//        response.setHeader("Access-Control-Allow-Origin", "*");
-//        response.setHeader("Access-Control-Allow-Methods", "POST, GET, DELETE, PUT");
-//        Student student = new Student();
-//        student.setStu_id("2015211516");
-//        student.setNick_name("admin");
-//        student.setOpenId("zxcvbnm,");
-//        student.setHead_url("www.baidu.com");
-//        student.setJurisdiction(Jurisdiction.SUPERSCHOLAR);
-//        request.getSession().setAttribute("user", student);
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Methods", "POST, GET, DELETE, PUT");
+        Student student = new Student();
+        student.setStu_id("2015211516");
+        student.setNick_name("admin");
+        student.setOpenId("zxcvbnm,");
+        student.setHead_url("www.baidu.com");
+        student.setJurisdiction(Jurisdiction.SUPERSCHOLAR);
+        request.getSession().setAttribute("user", student);
 
         // 判断session中是否有该用户
         Student stu = (Student) request.getSession().getAttribute("user");

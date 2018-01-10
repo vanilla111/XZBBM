@@ -311,9 +311,13 @@ nloadmore.onclick = function() {
             arr = JSON.parse(xhr.responseText);
             var size = arr.data.size;
             if (arr.data.pages >= npage) {
-                for (var i = 0, j = (10 * (npage - 1)); i < size, j < (10 * npage); i++, j++) {
+                console.log(arr);
+                for (var i = 0, j = (10 * (npage - 1)); i < size && j < (10 * npage); i++, j++) {
+                    console.log(arr.data.list[i]);
+                    console.log(i);
                     if (arr.data.list[i].pic_thumb == 'undefined') {
-                        pic_thumb[i] = 2335;
+                        // console.log(arr.data.list[i]);
+                        // pic_thumb[i] = 2335;
                     } else {
                         pic_thumb[i] = arr.data.list[i].pic_thumb;
                     }
@@ -346,10 +350,10 @@ nloadmore.onclick = function() {
                         '<div class="questionImg"><img src="' + action + pic_thumb[i] + '"></div></div>' +
                         '<div class="bottom">' +
                         '<div class="comment"><div class="commentIcon"></div>' +
-                        '<p class="commentNum">' + reply_count[i] + '</p></div></div>'
+                        '<p class="commentNum">' + reply_count[i] + '</p></div></div>';
 
+                    var gg = document.querySelectorAll(".questionImg");
                     if (pic_thumb[i] == 2335) {
-                        var gg = document.querySelectorAll(".questionImg");
                         gg[j].style.display = 'none';
                     }
                     newquestion = document.querySelectorAll(".newquestion");
@@ -377,7 +381,7 @@ hloadmore.onclick = function() {
             arr = JSON.parse(xhr.responseText);
             var size = arr.data.size;
             if (arr.data.pages >= hpage) {
-                for (var i = 0, j = (10 * (hpage - 1)); i < size, j < (10 * hpage); i++, j++) {
+                for (var i = 0, j = (10 * (hpage - 1)); i < size&&j < (10 * hpage); i++, j++) {
                     if (arr.data.list[i].pic_thumb == 'undefined') {
                         pic_thumb[i] = 2335;
                     } else {
@@ -412,10 +416,10 @@ hloadmore.onclick = function() {
                         '<div class="hotquestionImg"><img src="' + action + pic_thumb[i] + '"></div></div>' +
                         '<div class="bottom">' +
                         '<div class="comment"><div class="commentIcon"></div>' +
-                        '<p class="commentNum">' + reply_count[i] + '</p></div></div>'
-
-                    if (pic_thumb[i] == 2335) {
-                        var g2 = document.querySelectorAll(".hotquestionImg");
+                        '<p class="commentNum">' + reply_count[i] + '</p></div></div>';
+                    
+                    var g2 = document.querySelectorAll(".hotquestionImg");
+                    if (pic_thumb[i] == 2335) {   
                         g2[j].style.display = 'none';
                     }
                     var hotquestion = document.querySelectorAll(".hotquestion");
@@ -480,10 +484,10 @@ function questionshow(url) {
                     '<div class="questionImg"><img src="' + action + pic_thumb[i] + '"></div></div>' +
                     '<div class="bottom">' +
                     '<div class="comment"><div class="commentIcon"></div>' +
-                    '<p class="commentNum">' + reply_count[i] + '</p></div></div>'
+                    '<p class="commentNum">' + reply_count[i] + '</p></div></div>';
 
-                if (pic_thumb[i] == 2333) {
-                    var g = document.querySelectorAll(".questionImg");
+                var g = document.querySelectorAll(".questionImg");
+                if (pic_thumb[i] == 2333) {                    
                     g[i].style.display = 'none';
                 }
                 newquestion = document.querySelectorAll(".newquestion");
@@ -545,8 +549,9 @@ function myquestionshow() {
                     '<div class="bottom">' +
                     '<div class="comment"><div class="commentIcon"></div>' +
                     '<p class="mycommentNum">' + reply_count[i] + '</p></div></div>';
+
+                var g1 = document.querySelectorAll(".myquestionImg");
                 if (pic_thumb[i] == 2334) {
-                    var g1 = document.querySelectorAll(".myquestionImg");
                     g1[i].style.display = 'none';
                 }
                 var myquestion = document.querySelectorAll(".myquestion");
@@ -635,9 +640,9 @@ function hotquestionshow() {
                     '<div class="bottom">' +
                     '<div class="comment"><div class="commentIcon"></div>' +
                     '<p class="commentNum">' + reply_count[i] + '</p></div></div>'
-
-                if (pic_thumb[i] == 2335) {
-                    var g2 = document.querySelectorAll(".hotquestionImg");
+                
+                var g2 = document.querySelectorAll(".hotquestionImg");
+                if (pic_thumb[i] == 2335) {                   
                     g2[i].style.display = 'none';
                 }
                 var hotquestion = document.querySelectorAll(".hotquestion");
@@ -661,8 +666,7 @@ myqloadmore.onclick = function() {
             arr = JSON.parse(xhr.responseText);
             var size = arr.data.size;
             if (arr.data.pages >= myqpage) {
-                for (var i = 0, j = (10 * (myqpage - 1)); i < size, j < (10 * myqpage); i++, j++) {
-
+                for (var i = 0, j = (10 * (myqpage - 1)); i < size&&j < (10 * myqpage); i++, j++) {
                     if (arr.data.list[i].pic_thumb == 'undefined') {
                         pic_thumb[i] = 2334;
                     } else {
@@ -698,8 +702,9 @@ myqloadmore.onclick = function() {
                         '<div class="bottom">' +
                         '<div class="comment"><div class="commentIcon"></div>' +
                         '<p class="mycommentNum">' + reply_count[i] + '</p></div></div>';
-                    if (pic_thumb[i] == 2334) {
+
                         var g1 = document.querySelectorAll(".myquestionImg");
+                    if (pic_thumb[i] == 2334) {                        
                         g1[j].style.display = 'none';
                     }
                     var myquestion = document.querySelectorAll(".myquestion");
@@ -728,7 +733,7 @@ myaloadmore.onclick = function() {
             arr = JSON.parse(xhr.responseText);
             var size = arr.data.size;
             if (arr.data.pages >= myapage) {
-                for (var i = 0, j = (10 * (myapage - 1)); i < size, j < (10 * myapage); i++, j++) {
+                for (var i = 0, j = (10 * (myapage - 1)); i < size&&j < (10 * myapage); i++, j++) {
 
                     if (arr.data.list[i].pic_thumb == 'undefined') {
                         pic_thumb[i] = 2336;
@@ -766,9 +771,9 @@ myaloadmore.onclick = function() {
                         '<div class="bottom">' +
                         '<div class="comment"><div class="commentIcon"></div>' +
                         '<p class="mycommentNum">' + reply_count[i] + '</p></div></div>'
-
-                    if (pic_thumb[i] == 2336) {
-                        var g3 = document.querySelectorAll(".myanswerImg");
+                    
+                    var g3 = document.querySelectorAll(".myanswerImg");
+                    if (pic_thumb[i] == 2336) {                        
                         g3[j].style.display = 'none';
                     }
                     var my_answer = document.querySelectorAll(".my_answer");
@@ -853,10 +858,10 @@ myanswer.onclick = function() {
                     '<div class="myanswerImg"><img src="' + action + pic_thumb[i] + '"></div></div>' +
                     '<div class="bottom">' +
                     '<div class="comment"><div class="commentIcon"></div>' +
-                    '<p class="mycommentNum">' + reply_count[i] + '</p></div></div>'
-
+                    '<p class="mycommentNum">' + reply_count[i] + '</p></div></div>';
+                var g3 = document.querySelectorAll(".myanswerImg");
                 if (pic_thumb[i] == 2336) {
-                    var g3 = document.querySelectorAll(".myanswerImg");
+                    
                     g3[i].style.display = 'none';
                 }
                 var my_answer = document.querySelectorAll(".my_answer");
@@ -1152,10 +1157,9 @@ sPage.onclick = function() {
                         '<div class="bottom">' +
                         '<div class="comment"><div class="commentIcon"></div>' +
                         '<p class="commentNum">' + reply_count[i] + '</p></div></div>'
-
+                    
+                    var g8 = document.querySelectorAll(".squestionImg");
                     if (pic_thumb[i] == 2333) {
-                        var g8 = document.querySelectorAll(".squestionImg");
-
                         g8[i].style.display = 'none';
                     }
                     var searchcontent = document.querySelectorAll(".searchcontent");

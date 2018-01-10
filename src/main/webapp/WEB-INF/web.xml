@@ -3,6 +3,9 @@
  "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
 <web-app>
+    <session-config>
+        <session-timeout>20</session-timeout>
+    </session-config>
     <error-page>
         <error-code>404</error-code>
         <location>/notfound.jsp</location>
