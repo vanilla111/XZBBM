@@ -311,13 +311,9 @@ nloadmore.onclick = function() {
             arr = JSON.parse(xhr.responseText);
             var size = arr.data.size;
             if (arr.data.pages >= npage) {
-                console.log(arr);
                 for (var i = 0, j = (10 * (npage - 1)); i < size && j < (10 * npage); i++, j++) {
-                    console.log(arr.data.list[i]);
-                    console.log(i);
                     if (arr.data.list[i].pic_thumb == 'undefined') {
-                        // console.log(arr.data.list[i]);
-                        // pic_thumb[i] = 2335;
+                        pic_thumb[i] = 2335;
                     } else {
                         pic_thumb[i] = arr.data.list[i].pic_thumb;
                     }
