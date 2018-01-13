@@ -8,6 +8,6 @@
 
 </body>
 <script>
-    window.location.href="http://wx.yyeke.com/XZBBM/bbm/page";
+    window.location.href="http://wx.iccob.com/XZBBM/bbm/page";
 </script>
 </html>

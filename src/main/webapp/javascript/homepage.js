@@ -1,5 +1,7 @@
-var basePath = "http://wx.yyeke.com/XZBBM/bbm/";
-var picPath = "http://wx.yyeke.com/XZBBM/";
+var basePath = "http://wx.iccob.com/XZBBM/bbm/";
+var picPath = "http://wx.iccob.com/XZBBM/";
+// var basePath = "http://wx.yyeke.com/XZBBM/bbm/";
+// var picPath = "http://wx.yyeke.com/XZBBM/";
 // var basePath = "http://bbm.redleaf.wang/bbm/";
 // var picPath = "http://bbm.redleaf.wang/";
 
